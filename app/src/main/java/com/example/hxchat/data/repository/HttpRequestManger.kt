@@ -30,7 +30,4 @@ class HttpRequestManger{
     /**
      * 根据传入的用户的邮箱，获得响应邮箱用户的好友列表
      */
-    suspend fun getFriendsData(email: String): ApiResponse<ArrayList<User>>{
-
-    }
 }

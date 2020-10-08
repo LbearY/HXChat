@@ -19,8 +19,5 @@ class RequestFriendsViewModel : BaseViewModel(){
     /**
      * 获取用户的好友列表
      */
-    fun getFriends(){
 
-        request({ HttpRequestCoroutline.getFriendsData()})
-    }
 }

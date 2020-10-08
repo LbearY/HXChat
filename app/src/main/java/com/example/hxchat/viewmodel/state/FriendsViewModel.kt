@@ -11,6 +11,7 @@ class FriendsViewModel : BaseViewModel(){
 
     var source: LiveData<Resource<List<User>>>? = null
 
+
     fun retry(){
 
     }
