@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">鸿讯</string>
+    <string name="custom_progress_dialog_loading_tips">请求网络中</string>
+    <string name="bottom_name_home">聊天</string>
+    <string name="bottom_name_friend">好友</string>
+    <string name="bottom_name_me">我</string>
+    <string name="send">发送</string>
+</resources>

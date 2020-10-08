@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2196F3</color>
+    <color name="colorPrimaryDark">#2196F3</color>
+    <color name="colorAccent">#2196F3</color>
+    <color name="textHint">#999999</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="colorGray">#333</color>
+    <color name="colorBlack666">#666</color>
+    <color name="colorBlack333">#333</color>
+    <color name="windowBackground">#F5F5F5</color>
+    <color name="background">#d8d8d8</color>
+    <color name="backgroundeee">#eeeeee</color>
+    <color name="backgrounGrey">#CCCCCC</color>
+    <color name="texttipColor">#a0a0a0</color>
+    <color name="diverColoe">#cecece</color>
+    <color name="accent">#E91E63</color>
+    <color name="chinaHoliDay">#e10015</color>
+    <color name="title_bg">#4587f0</color>
+    <color name="space_bg">#f2f3f6</color>
+    <color name="line">#f2f3f6</color>
+    <color name="white_pressed">#ddffffff</color>
+    <color name="text_3">#333333</color>
+    <color name="text_9">#999999</color>
+    <color name="text_6">#666666</color>
+    <color name="text_white">#ffffff</color>
+    <color name="text_red">#D93F3C</color>
+    <color name="bubble_color">#cccccc</color>
+
+</resources>
