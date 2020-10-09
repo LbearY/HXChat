@@ -2,6 +2,7 @@ package com.example.hxchat.ui.fragment.friends
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import com.example.hxchat.ui.adapter.BindingAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -14,10 +15,12 @@ import com.example.hxchat.app.base.BaseFragment
 import com.example.hxchat.data.model.bean.User
 import com.example.hxchat.data.packet.resp.AcceptResp
 import com.example.hxchat.databinding.FragmentFriendsBinding
+import com.example.hxchat.viewmodel.request.RequestFriendsViewModel
 import com.example.hxchat.viewmodel.state.FriendsViewModel
 import com.king.frame.mvvmframe.bean.Resource
 import kotlinx.android.synthetic.main.fragment_friends.*
 import kotlinx.android.synthetic.main.home_toolbar.*
+import me.hgj.jetpackmvvm.ext.parseState
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -28,13 +31,14 @@ import org.greenrobot.eventbus.ThreadMode
 
 class FriendsFragment:BaseFragment<FriendsViewModel, FragmentFriendsBinding>(), View.OnClickListener{
 
+    private val  requestFriendsViewModel: RequestFriendsViewModel by viewModels()
+
     val mAdapter by lazy { BindingAdapter<User>(R.layout.rv_user_item) }
 
     override fun layoutId() : Int = R.layout.fragment_friends
 
     override fun initView(savedInstanceState: Bundle?) {
-        mDatabind.vm = mViewModel
-
+        mDatabind.vm = requestFriendsViewModel
         tvTitle.text = "好友"
 
         srl.setColorSchemeResources(R.color.colorAccent)
@@ -48,23 +52,21 @@ class FriendsFragment:BaseFragment<FriendsViewModel, FragmentFriendsBinding>(), 
             clickItem(mAdapter.getItem(position)!!)
         }
 
-        mViewModel.retry()
+        requestFriendsViewModel.getfriends()
     }
 
     override fun createObserver() {
-        mViewModel.run {
-            friendsLiveData.observe(viewLifecycleOwner, Observer {
-                it?.let {
-                    mAdapter.replaceData(it)
-                }
+        requestFriendsViewModel.friendsData.observe(viewLifecycleOwner, Observer { resultState ->
+            parseState(resultState, {
+                mAdapter.replaceData(it)
             })
-        }
+        })
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: AcceptResp){
         if(event.success){//同意添加好友-刷新数据
-            mViewModel.retry()
+            requestFriendsViewModel.getfriends()
         }
 
     }

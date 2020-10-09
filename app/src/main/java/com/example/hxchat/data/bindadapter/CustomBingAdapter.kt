@@ -1,5 +1,6 @@
 package com.example.hxchat.data.bindadapter
 
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -10,6 +11,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.example.hxchat.R
 import com.example.hxchat.app.util.TimeUtils
+import com.example.hxchat.ui.view.DragBubbleView
 import de.hdodenhof.circleimageview.CircleImageView
 
 /**
@@ -66,6 +68,19 @@ object CustomBingAdapter{
             text = count.toString()
         }else{
             text = ""
+        }
+
+    }
+
+    @BindingAdapter(value = ["count"])
+    fun DragBubbleView.count(count: Int){
+        reCreate()
+        if(count>0){
+            setText(count.coerceAtMost(99).toString())
+            visibility = View.VISIBLE
+        }else{
+            setText("")
+            visibility = View.INVISIBLE
         }
 
     }
