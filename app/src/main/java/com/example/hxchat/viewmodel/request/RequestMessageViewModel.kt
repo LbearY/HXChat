@@ -21,7 +21,7 @@ import java.io.File
  */
 
 class RequestMessageViewModel : BaseViewModel(){
-    var messageReq : MutableLiveData<MessageResp> = MutableLiveData()
+    var messageReq : MutableLiveData<ResultState<MessageResp>> = MutableLiveData()
 
     /**
      * 发送消息
