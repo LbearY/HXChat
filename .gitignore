@@ -88,4 +88,4 @@ lint/tmp/
 *.hprof
 
 # ide config
-/.idea/
+.idea/*

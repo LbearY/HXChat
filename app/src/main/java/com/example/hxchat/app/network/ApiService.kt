@@ -13,14 +13,14 @@ import retrofit2.http.POST
 
 interface ApiService {
     companion object {
-        const val SERVER_URL = "https://wanandroid.com/"
+        const val SERVER_URL = "https://5492ea4c-1284-47fd-b70f-5923363e1724.mock.pstmn.io"
     }
 
     /**
      * 登录
      */
     @FormUrlEncoded
-    @POST("user/login")
+    @POST("session/")
     suspend fun login(
         @Field("email") email: String,
         @Field("password") pwd: String
@@ -30,11 +30,10 @@ interface ApiService {
      * 注册
      */
     @FormUrlEncoded
-    @POST("user/register")
+    @POST("user/")
     suspend fun register(
         @Field("email") email: String,
-        @Field("password") pwd: String,
-        @Field("repassword") rpwd: String
+        @Field("password") pwd: String
     ): ApiResponse<Any>
 
 
