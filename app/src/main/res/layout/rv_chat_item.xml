@@ -10,7 +10,7 @@
 
         <variable
             name="data"
-            type="com.king.easychat.netty.packet.resp.MessageResp" />
+            type="com.example.hxchat.data.packet.resp.MessageResp" />
 
         <variable
             name="curTime"

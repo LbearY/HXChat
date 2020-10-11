@@ -5,7 +5,7 @@
     <data>
         <variable
             name="vm"
-            type="com.example.hxchat.viewmodel.state.FriendsViewModel" />
+            type="com.example.hxchat.viewmodel.request.RequestFriendsViewModel" />
     </data>
 
     <LinearLayout
@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/srl"
-            bind:onRefreshListener="@{()->vm.retry()}">
+            bind:onRefreshListener="@{()->vm.getfriends()}">
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

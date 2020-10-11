@@ -18,6 +18,7 @@ import kotlinx.android.parcel.Parcelize
 data class UserInfo(var email:String="",
                     var nickname: String="",
                     var icon:String="",
+                    var token: String="",
                     var password:String="",
                     var signature:String?=null,
                     var remark: String?=null):Parcelable

@@ -23,5 +23,5 @@ interface RecentChatDao{
     fun delete(email: String)
 
     @Query("SELECT * FROM RecentChat WHERE email = :email")
-    fun getRecentChat(email: String): List<RecentChat>
+    fun getRecentChats(email: String): List<RecentChat>
 }

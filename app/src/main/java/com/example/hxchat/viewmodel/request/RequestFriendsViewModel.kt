@@ -1,12 +1,15 @@
 package com.example.hxchat.viewmodel.request
 
 import android.app.Application
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.hxchat.app.network.apiService
 import com.example.hxchat.app.network.stateCallback.ListDataiState
 import com.example.hxchat.data.model.bean.User
 import com.example.hxchat.data.repository.HttpRequestCoroutline
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import me.hgj.jetpackmvvm.ext.request
+import me.hgj.jetpackmvvm.state.ResultState
 
 
 /**
@@ -14,13 +17,14 @@ import me.hgj.jetpackmvvm.ext.request
  * on 2020/10/8
  */
 class RequestFriendsViewModel : BaseViewModel(){
-    var friendsDataState : MutableLiveData<ListDataiState<User>> = MutableLiveData()
+    var friendsData : MutableLiveData<ResultState<ArrayList<User>>> = MutableLiveData()
 
     /**
      * 获取用户的好友列表
      */
-    fun getFriends(){
-
-        request({ HttpRequestCoroutline.getFriendsData()})
+    fun getfriends(){
+        request({ apiService.getFriends()},{
+            friendsData
+        })
     }
 }

@@ -7,6 +7,7 @@ import com.example.hxchat.app.event.AppViewModel
 import com.example.hxchat.app.event.EventViewModel
 import com.example.hxchat.app.ext.dismissLoadingExt
 import com.example.hxchat.app.ext.showLoadingExt
+import com.example.hxchat.app.util.Event
 import me.hgj.jetpackmvvm.base.activity.BaseVmActivity
 import me.hgj.jetpackmvvm.base.activity.BaseVmDbActivity
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
@@ -41,6 +42,16 @@ abstract class BaseActivity<VM: BaseViewModel, DB : ViewDataBinding> :BaseVmDbAc
         dismissLoadingExt()
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Event.registerEvent(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Event.unregisterEvent(this)
+    }
+
     /**
      * 处理适配失败时候的问题
      */
@@ -48,4 +59,7 @@ abstract class BaseActivity<VM: BaseViewModel, DB : ViewDataBinding> :BaseVmDbAc
         AutoSizeCompat.autoConvertDensityOfGlobal(super.getResources())
         return super.getResources()
     }
+
+    fun getUserEmail() = appViewModel.userInfo.value?.email ?: ""
+    fun getUserAvatar() = appViewModel.userInfo.value?.icon ?: ""
 }

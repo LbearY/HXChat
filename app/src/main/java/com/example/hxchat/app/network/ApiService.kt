@@ -1,9 +1,11 @@
 package com.example.hxchat.app.network
 
 import com.example.hxchat.data.model.bean.ApiResponse
+import com.example.hxchat.data.model.bean.User
 import com.example.hxchat.data.model.bean.UserInfo
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 /**
@@ -36,5 +38,17 @@ interface ApiService {
         @Field("password") pwd: String
     ): ApiResponse<Any>
 
+    /**
+     * 获得好友列表
+     */
+    @GET("friends")
+    suspend fun getFriends() : ApiResponse<ArrayList<User>>
 
+    /**
+     * 发送消息
+     */
+    @POST
+    suspend fun sendMessage(
+
+    )
 }
