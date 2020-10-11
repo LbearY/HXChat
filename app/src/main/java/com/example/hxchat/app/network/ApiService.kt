@@ -44,4 +44,12 @@ interface ApiService {
      */
     @GET("friends")
     suspend fun getFriends() : ApiResponse<ArrayList<User>>
+
+    /**
+     * 发送消息
+     */
+    @POST
+    suspend fun sendMessage(
+
+    )
 }

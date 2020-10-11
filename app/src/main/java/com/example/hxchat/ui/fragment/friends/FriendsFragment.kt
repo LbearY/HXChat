@@ -1,5 +1,6 @@
 package com.example.hxchat.ui.fragment.friends
 
+import android.app.Application
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -17,6 +18,7 @@ import com.example.hxchat.data.packet.resp.AcceptResp
 import com.example.hxchat.databinding.FragmentFriendsBinding
 import com.example.hxchat.viewmodel.request.RequestFriendsViewModel
 import com.example.hxchat.viewmodel.state.FriendsViewModel
+import com.example.hxchat.viewmodel.state.UsersViewModel
 import com.king.frame.mvvmframe.bean.Resource
 import kotlinx.android.synthetic.main.fragment_friends.*
 import kotlinx.android.synthetic.main.home_toolbar.*
@@ -32,6 +34,7 @@ import org.greenrobot.eventbus.ThreadMode
 class FriendsFragment:BaseFragment<FriendsViewModel, FragmentFriendsBinding>(), View.OnClickListener{
 
     private val  requestFriendsViewModel: RequestFriendsViewModel by viewModels()
+    private val usersViewModel = UsersViewModel(application = Application())
 
     val mAdapter by lazy { BindingAdapter<User>(R.layout.rv_user_item) }
 
@@ -59,6 +62,8 @@ class FriendsFragment:BaseFragment<FriendsViewModel, FragmentFriendsBinding>(), 
         requestFriendsViewModel.friendsData.observe(viewLifecycleOwner, Observer { resultState ->
             parseState(resultState, {
                 mAdapter.replaceData(it)
+                usersViewModel.saveUsers(it)
+                srl.isRefreshing = false
             })
         })
     }
@@ -68,7 +73,6 @@ class FriendsFragment:BaseFragment<FriendsViewModel, FragmentFriendsBinding>(), 
         if(event.success){//同意添加好友-刷新数据
             requestFriendsViewModel.getfriends()
         }
-
     }
 
     fun clickItem(data: User){

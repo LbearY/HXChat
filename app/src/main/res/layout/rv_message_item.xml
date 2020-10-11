@@ -15,11 +15,11 @@
     <com.guanaj.easyswipemenulibrary.EasySwipeMenuLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:contentView="@+id/content"
+        app:contentView="@+id/clContent"
         app:rightMenuView="@+id/llDelete">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/content"
+            android:id="@+id/clContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/size_16dp"
