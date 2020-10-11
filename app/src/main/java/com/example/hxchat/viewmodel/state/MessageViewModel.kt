@@ -14,12 +14,11 @@ import com.example.hxchat.data.packet.resp.MessageResp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import timber.log.Timber
 import com.example.hxchat.app.util.Event
 import com.example.hxchat.data.model.bean.*
+import com.example.hxchat.ui.fragment.home.HomeFragment
 import com.king.easychat.netty.packet.MessageType
-import com.king.frame.mvvmframe.base.BaseApplication
 import kotlinx.coroutines.withContext
 
 
@@ -29,6 +28,7 @@ import kotlinx.coroutines.withContext
  */
 
 open class MessageViewModel(application: Application)  : AndroidViewModel(application){
+
     var messageLiveData = MutableLiveData<List<MessageResp>>() // 和单个 好友的最近聊天记录
     var lastMessageLiveData = MutableLiveData<List<Message>>()
     var totalCountLiveData = MutableLiveData<Int>()
@@ -122,8 +122,10 @@ open class MessageViewModel(application: Application)  : AndroidViewModel(applic
         }
     }
 
+    private val db: AppDatabase = AppDatabase.getInstance(application)
+
     fun getAppDatabase(): AppDatabase{
-        return AppDatabase.getInstance(getApplication())
+        return db
     }
 
     fun getUserDao(): UserDao {
@@ -197,7 +199,7 @@ open class MessageViewModel(application: Application)  : AndroidViewModel(applic
         //遍历获取最近的聊天消息记录
         for (recentChat in recentChats) {
             val messageResp = messageDao.getLastMessageBySenderId(userEmail, recentChat.chatId,recentChat.chatId)
-            val count = messageDao.getUnreadList(userEmail,recentChat.chatId).size
+            val count : Int = messageDao.getUnreadList(userEmail,recentChat.chatId).size
             cnt += count
             val messageList = Message()
             messageList.count = count

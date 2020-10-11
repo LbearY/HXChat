@@ -1,23 +1,16 @@
 package com.example.hxchat.ui.fragment.home
 
-import android.app.Application
-import android.content.ClipData.newIntent
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
-import android.util.Xml
 import android.view.View
-import androidx.databinding.ObservableField
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.example.hxchat.R
 import com.example.hxchat.app.Constants
 import com.example.hxchat.app.base.BaseFragment
-import com.example.hxchat.app.ext.showMessage
 import com.example.hxchat.data.model.bean.Message
 import com.example.hxchat.data.model.bean.Operator
 import com.example.hxchat.databinding.FragmentHomeBinding
@@ -29,12 +22,9 @@ import com.king.easychat.netty.packet.Packet
 import com.king.easychat.netty.packet.PacketType
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.home_toolbar.*
-import me.hgj.jetpackmvvm.callback.databind.IntObservableField
-import me.hgj.jetpackmvvm.callback.databind.StringObservableField
+import me.hgj.jetpackmvvm.base.appContext
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.util.*
-import kotlin.math.log
 
 /**
  *Created by Pbihao
@@ -45,7 +35,7 @@ class HomeFragment: BaseFragment<HomeViewModel, FragmentHomeBinding>(), View.OnC
 
     override fun layoutId(): Int = R.layout.fragment_home
 
-    private val messageViewModel =  MessageViewModel(application = Application())
+    private val messageViewModel : MessageViewModel by lazy {  ViewModelProvider(this).get(MessageViewModel::class.java) }
 
     val mAdapter by lazy {MessageAdapter(getUserEmail(), messageViewModel)}
 
@@ -66,10 +56,12 @@ class HomeFragment: BaseFragment<HomeViewModel, FragmentHomeBinding>(), View.OnC
 
 
     override fun initView(savedInstanceState: Bundle?) {
-        mDatabind.homevm = mViewModel
 
         tvTitle.setText(R.string.menu_message)
         srl.setColorSchemeResources(R.color.colorAccent)
+        srl.setOnRefreshListener {
+            messageViewModel.delay(getUserEmail(), 0)
+        }
         isRefresh = true
 
         rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -82,10 +74,13 @@ class HomeFragment: BaseFragment<HomeViewModel, FragmentHomeBinding>(), View.OnC
                 R.id.llDelete -> clickDeleteItem(mAdapter.getItem(position)!!)
             }
         }
+
+
+
     }
 
     override fun createObserver() {
-        mViewModel.run {
+        messageViewModel.run {
             lastMessageLiveData.observe(viewLifecycleOwner, Observer{
                 mAdapter.curTime = System.currentTimeMillis()
                 mAdapter.replaceData(it)
@@ -104,7 +99,7 @@ class HomeFragment: BaseFragment<HomeViewModel, FragmentHomeBinding>(), View.OnC
 
     private fun requestData(){
         if (isRefresh){
-            mViewModel.delay(200)
+            messageViewModel.delay(getUserEmail(), 200)
         }
     }
 

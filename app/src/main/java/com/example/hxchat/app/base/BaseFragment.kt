@@ -14,6 +14,8 @@ import com.example.hxchat.app.util.Event
 import me.hgj.jetpackmvvm.base.fragment.BaseVmDbFragment
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import me.hgj.jetpackmvvm.ext.getAppViewModel
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 /**
  *Created by Pbihao
@@ -45,6 +47,11 @@ abstract class BaseFragment<VM : BaseViewModel, DB: ViewDataBinding>  : BaseVmDb
     override fun createObserver() { }
 
     override fun initData() {  }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onAllEvent(event: Any){
+
+    }
 
     /**
      * 等待框

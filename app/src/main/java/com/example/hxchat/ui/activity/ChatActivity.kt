@@ -7,12 +7,12 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hxchat.R
 import com.example.hxchat.app.Constants
 import com.example.hxchat.app.base.BaseActivity
-import com.example.hxchat.app.base.BaseFragment
 import com.example.hxchat.app.util.Event
 import com.example.hxchat.app.util.KeyboardUtils
 import com.example.hxchat.data.model.bean.Operator
@@ -26,6 +26,7 @@ import com.example.hxchat.viewmodel.state.MessageViewModel
 import com.king.easychat.netty.packet.MessageType
 import kotlinx.android.synthetic.main.center_toolbar.*
 import kotlinx.android.synthetic.main.fragment_chat.*
+import me.hgj.jetpackmvvm.ext.parseState
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -48,7 +49,7 @@ class ChatActivity : BaseActivity<ChatViewModel, FragmentChatBinding>(){
     var isAutoScroll = true
 
     private val requestMessageViewModel: RequestMessageViewModel by viewModels()
-    private val messageViewModel = MessageViewModel(this.application)
+    private val messageViewModel : MessageViewModel by lazy {  ViewModelProvider(this).get(MessageViewModel::class.java) }
 
     override fun layoutId(): Int = R.layout.fragment_chat
 
@@ -92,9 +93,9 @@ class ChatActivity : BaseActivity<ChatViewModel, FragmentChatBinding>(){
         rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                var layoutManager = recyclerView.layoutManager
+                val layoutManager = recyclerView.layoutManager
                 if(layoutManager is LinearLayoutManager){
-                    var lastPosition = layoutManager.findLastVisibleItemPosition()
+                    val lastPosition = layoutManager.findLastVisibleItemPosition()
 
                     if(lastPosition == layoutManager.itemCount - 1){
                         isAutoScroll = true
@@ -112,7 +113,7 @@ class ChatActivity : BaseActivity<ChatViewModel, FragmentChatBinding>(){
         showName = intent.getStringExtra(Constants.KEY_TITLE)
         tvTitle.text = showName
         friendEmail = intent.getStringExtra(Constants.KEY_ID)
-        appViewModel.friendEmail.value = friendEmail
+        appViewModel.friendEmail.postValue(friendEmail)
 
         messageViewModel.queryMessageByFriendId(getUserEmail(),friendEmail,curPage,Constants.PAGE_SIZE)
 
@@ -140,8 +141,10 @@ class ChatActivity : BaseActivity<ChatViewModel, FragmentChatBinding>(){
             }
         })
 
-        requestMessageViewModel.messageReq.observe(this, Observer {
-            handleMessageResp(it)
+        requestMessageViewModel.messageReq.observe(this, Observer {resultState ->
+            parseState(resultState,{
+                handleMessageResp(it)
+            })
         })
     }
 
@@ -175,7 +178,7 @@ class ChatActivity : BaseActivity<ChatViewModel, FragmentChatBinding>(){
         resp?.let {
             if(it.isSender || friendEmail == it.sender){
                 mAdapter.addData(it)
-                messageViewModel.saveMessage(getUserEmail(), friendEmail, showName, avatar,true,resp)
+                //messageViewModel.saveMessage(getUserEmail(), friendEmail, showName, avatar,true,resp)
                 if(isAutoScroll){
                     rv.scrollToPosition(mAdapter.itemCount - 1)
                 }

@@ -18,5 +18,5 @@
     <dimen name="size_14dp">14dp</dimen>
     <dimen name="size_18sp">18sp</dimen>
     <dimen name="size_space">8dp</dimen>
-    <item name="size_line" type="dimen" format="float">0.5dp</item>
+    <dimen name="size_line">0.5dp</dimen>
 </resources>
