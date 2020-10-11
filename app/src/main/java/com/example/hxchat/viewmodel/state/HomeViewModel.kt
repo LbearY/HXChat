@@ -11,22 +11,8 @@ import kotlinx.coroutines.launch
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import timber.log.Timber
 
-class HomeViewModel(application: Application) : BaseViewModel(){
-    var lastMessageLiveData = MutableLiveData<List<Message>>()
+class HomeViewModel : BaseViewModel(){
 
-    var userLiveData = MutableLiveData<User>()
-
-    var totalCountLiveData = MutableLiveData<Int>()
-
-    var friendsLiveData = MediatorLiveData<List<User>>()
-
-    fun retry(){
-
-    }
-
-    fun delay(x:Int){
-
-    }
 
 
 }

@@ -7,12 +7,12 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hxchat.R
 import com.example.hxchat.app.Constants
 import com.example.hxchat.app.base.BaseActivity
-import com.example.hxchat.app.base.BaseFragment
 import com.example.hxchat.app.util.Event
 import com.example.hxchat.app.util.KeyboardUtils
 import com.example.hxchat.data.model.bean.Operator
@@ -49,7 +49,7 @@ class ChatActivity : BaseActivity<ChatViewModel, FragmentChatBinding>(){
     var isAutoScroll = true
 
     private val requestMessageViewModel: RequestMessageViewModel by viewModels()
-    private val messageViewModel = MessageViewModel(this.application)
+    private val messageViewModel : MessageViewModel by lazy {  ViewModelProvider(this).get(MessageViewModel::class.java) }
 
     override fun layoutId(): Int = R.layout.fragment_chat
 

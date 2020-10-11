@@ -4,9 +4,6 @@
 
     <data>
 
-        <variable
-            name="Homevm"
-            type="com.example.hxchat.viewmodel.state.HomeViewModel" />
     </data>
 
     <LinearLayout
@@ -19,8 +16,7 @@
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/srl"
-            bind:onRefreshListener="@{() -> Homevm.retry()}">
+            android:id="@+id/srl">
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

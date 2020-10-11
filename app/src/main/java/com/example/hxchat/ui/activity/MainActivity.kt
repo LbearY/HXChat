@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
+import androidx.lifecycle.ViewModelProvider
 import com.example.hxchat.R
 import com.example.hxchat.app.Constants
 import com.example.hxchat.app.base.BaseActivity
@@ -21,7 +22,7 @@ import timber.log.Timber
 class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
     override fun layoutId(): Int = R.layout.activity_main
 
-    private val messageViewModel =  MessageViewModel(application = Application())
+    private val messageViewModel : MessageViewModel by lazy {  ViewModelProvider(this).get(MessageViewModel::class.java) }
 
     override fun initView(savedInstanceState: Bundle?) {
 
@@ -32,7 +33,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onMessageEvent(event: Operator){
+    override fun onMessageEvent(event: Operator){
         when (event.event) {
             Constants.EVENT_UPDATE_MESSAGE_READ -> handleMessageRead()
         }
