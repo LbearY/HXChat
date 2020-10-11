@@ -3,6 +3,7 @@ package com.example.hxchat.ui.fragment.home
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -35,7 +36,8 @@ class HomeFragment: BaseFragment<HomeViewModel, FragmentHomeBinding>(), View.OnC
 
     override fun layoutId(): Int = R.layout.fragment_home
 
-    private val messageViewModel : MessageViewModel by lazy {  ViewModelProvider(this).get(MessageViewModel::class.java) }
+    //private val messageViewModel : MessageViewModel by lazy {  ViewModelProvider(this).get(MessageViewModel::class.java) }
+    private val messageViewModel : MessageViewModel by activityViewModels<MessageViewModel>()
 
     val mAdapter by lazy {MessageAdapter(getUserEmail(), messageViewModel)}
 

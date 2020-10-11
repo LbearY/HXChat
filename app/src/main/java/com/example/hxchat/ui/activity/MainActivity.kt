@@ -13,6 +13,7 @@ import com.example.hxchat.data.packet.resp.MessageResp
 import com.example.hxchat.databinding.ActivityMainBinding
 import com.example.hxchat.viewmodel.state.MainViewModel
 import com.example.hxchat.viewmodel.state.MessageViewModel
+import com.example.hxchat.viewmodel.state.UsersViewModel
 import com.king.easychat.netty.packet.Packet
 import com.king.easychat.netty.packet.PacketType
 import org.greenrobot.eventbus.Subscribe
@@ -23,6 +24,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
     override fun layoutId(): Int = R.layout.activity_main
 
     private val messageViewModel : MessageViewModel by lazy {  ViewModelProvider(this).get(MessageViewModel::class.java) }
+    private val usersViewModel: UsersViewModel by lazy { ViewModelProvider(this).get(UsersViewModel::class.java) }
 
     override fun initView(savedInstanceState: Bundle?) {
 

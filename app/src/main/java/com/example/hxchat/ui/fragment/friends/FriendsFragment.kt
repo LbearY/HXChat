@@ -3,6 +3,7 @@ package com.example.hxchat.ui.fragment.friends
 import android.app.Application
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.example.hxchat.ui.adapter.BindingAdapter
 import androidx.lifecycle.LiveData
@@ -18,6 +19,7 @@ import com.example.hxchat.data.packet.resp.AcceptResp
 import com.example.hxchat.databinding.FragmentFriendsBinding
 import com.example.hxchat.viewmodel.request.RequestFriendsViewModel
 import com.example.hxchat.viewmodel.state.FriendsViewModel
+import com.example.hxchat.viewmodel.state.MessageViewModel
 import com.example.hxchat.viewmodel.state.UsersViewModel
 import com.king.frame.mvvmframe.bean.Resource
 import kotlinx.android.synthetic.main.fragment_friends.*
@@ -34,7 +36,8 @@ import org.greenrobot.eventbus.ThreadMode
 class FriendsFragment:BaseFragment<FriendsViewModel, FragmentFriendsBinding>(), View.OnClickListener{
 
     private val  requestFriendsViewModel: RequestFriendsViewModel by viewModels()
-    private val usersViewModel = UsersViewModel(application = Application())
+    //private val usersViewModel = UsersViewModel(application = Application())
+    private val usersViewModel : UsersViewModel by activityViewModels<UsersViewModel>()
 
     val mAdapter by lazy { BindingAdapter<User>(R.layout.rv_user_item) }
 
