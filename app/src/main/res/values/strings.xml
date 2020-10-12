@@ -8,4 +8,11 @@
     <string name="menu_message">消息</string>
     <string name="tips_netty_disconnect">断开连接</string>
     <string name="tips_netty_reconnect">重新连接</string>
+    <string name="avatar">头像</string>
+    <string name="nickname">昵称</string>
+    <string name="username">邮箱</string>
+    <string name="signature">个性签名</string>
+    <string name="logout">退出登录</string>
+    <string name="remark_name">备注</string>
+    <string name="add_friend">添加好友</string>
 </resources>
