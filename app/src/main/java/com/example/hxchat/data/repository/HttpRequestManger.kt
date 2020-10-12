@@ -17,7 +17,7 @@ val HttpRequestCoroutline: HttpRequestManger by lazy (mode = LazyThreadSafetyMod
 
 class HttpRequestManger{
     suspend fun register(email: String, password: String): ApiResponse<UserInfo> {
-        val registerData = apiService.register(email, password, password)
+        val registerData = apiService.register(email, password)
         if (registerData.isSucces()) {
             // 直接登录
             return apiService.login(email, password)
