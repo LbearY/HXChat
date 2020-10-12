@@ -1,5 +1,6 @@
 package com.example.hxchat.ui.adapter
 
+import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding

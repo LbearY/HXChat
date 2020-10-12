@@ -12,6 +12,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.hxchat.R
 import com.example.hxchat.app.util.TimeUtils
 import com.example.hxchat.ui.view.DragBubbleView
+import com.king.easychat.glide.GlideApp
 import de.hdodenhof.circleimageview.CircleImageView
 
 /**
@@ -31,6 +32,7 @@ object CustomBingAdapter{
             .into(view)
     }
 
+    @JvmStatic
     @BindingAdapter(value = ["time"])
     fun TextView.dateFormat(time: String?){
         time?.run {
@@ -41,11 +43,13 @@ object CustomBingAdapter{
 
     }
 
+    @JvmStatic
     @BindingAdapter(value = ["time","curTime"])
     fun TextView.dateFormat(time: String?, curTime: Long){
         dateFormat(time,curTime,false)
     }
 
+    @JvmStatic
     @BindingAdapter(value = ["time","curTime","showDate"])
     fun TextView.dateFormat(time: String?, curTime: Long, showDate: Boolean){
         time?.run {
@@ -62,6 +66,7 @@ object CustomBingAdapter{
         }
     }
 
+    @JvmStatic
     @BindingAdapter(value = ["count"])
     fun TextView.count(count: Int){
         if(count>0){
@@ -72,6 +77,7 @@ object CustomBingAdapter{
 
     }
 
+    @JvmStatic
     @BindingAdapter(value = ["count"])
     fun DragBubbleView.count(count: Int){
         reCreate()
@@ -86,7 +92,7 @@ object CustomBingAdapter{
     }
 
 
-
+    @JvmStatic
     @BindingAdapter(value = ["imageUrl"])
     fun ImageView.imageUrl(imageUrl: String?){
         imageUrl?.run {
@@ -96,25 +102,24 @@ object CustomBingAdapter{
 
     }
 
-
-
+    @JvmStatic
     @BindingAdapter(value = ["avatar"])
     fun ImageView.avatar(imageUrl: String?){
         imageUrl?.run {
-            Glide.with(context).load(imageUrl).error(R.mipmap.ic_me_user_image).into(this@avatar)
+            Glide.with(context).load(imageUrl).error(R.drawable.default_avatar).into(this@avatar)
         }?: run{
-            Glide.with(context).load(R.mipmap.ic_me_user_image).into(this@avatar)
+            Glide.with(context).load(R.drawable.default_avatar).into(this@avatar)
         }
 
     }
 
+    @JvmStatic
     @BindingAdapter(value = ["avatar"])
     fun CircleImageView.avatar(avatar: String?){
         avatar?.run {
-            Glide.with(context).load(avatar).error(R.mipmap.ic_me_user_image).into(this@avatar)
+            Glide.with(context).load(avatar).error(R.drawable.default_avatar).into(this@avatar)
         } ?: run{
-            Glide.with(context).load(R.mipmap.ic_me_user_image).into(this@avatar)
+            Glide.with(context).load(R.drawable.default_avatar).into(this@avatar)
         }
-
     }
 }

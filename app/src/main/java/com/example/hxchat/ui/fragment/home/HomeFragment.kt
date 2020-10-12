@@ -32,7 +32,7 @@ import org.greenrobot.eventbus.ThreadMode
  * on 2020/10/4
  */
 
-class HomeFragment: BaseFragment<HomeViewModel, FragmentHomeBinding>(), View.OnClickListener{
+class HomeFragment: BaseFragment<HomeViewModel, FragmentHomeBinding>(){
 
     override fun layoutId(): Int = R.layout.fragment_home
 
@@ -157,7 +157,4 @@ class HomeFragment: BaseFragment<HomeViewModel, FragmentHomeBinding>(), View.OnC
         messageViewModel.deleteLatestChat(getUserEmail(), data)
     }
 
-    override fun onClick(p0: View?) {
-        TODO("Not yet implemented")
-    }
 }

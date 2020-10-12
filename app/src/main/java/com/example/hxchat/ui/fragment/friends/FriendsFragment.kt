@@ -2,6 +2,7 @@ package com.example.hxchat.ui.fragment.friends
 
 import android.app.Application
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -17,6 +18,7 @@ import com.example.hxchat.app.base.BaseFragment
 import com.example.hxchat.data.model.bean.User
 import com.example.hxchat.data.packet.resp.AcceptResp
 import com.example.hxchat.databinding.FragmentFriendsBinding
+import com.example.hxchat.ui.adapter.FriendsAdapter
 import com.example.hxchat.viewmodel.request.RequestFriendsViewModel
 import com.example.hxchat.viewmodel.state.FriendsViewModel
 import com.example.hxchat.viewmodel.state.MessageViewModel
@@ -51,7 +53,6 @@ class FriendsFragment:BaseFragment<FriendsViewModel, FragmentFriendsBinding>(), 
 
         rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv.addItemDecoration(DividerItemDecoration(context,DividerItemDecoration.VERTICAL))
-
         rv.adapter = mAdapter
 
         mAdapter.onItemClickListener = BaseQuickAdapter.OnItemClickListener{adapter, view, position ->

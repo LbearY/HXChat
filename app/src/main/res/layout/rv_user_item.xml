@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/size_16sp"
             android:textColor="@color/text_3"
-            android:text="@{data.nickName}"
+            android:text="@{data.showName}"
             tools:text="彭博濠"
             android:layout_marginLeft="@dimen/size_6dp"
             app:layout_constraintTop_toTopOf="parent"
