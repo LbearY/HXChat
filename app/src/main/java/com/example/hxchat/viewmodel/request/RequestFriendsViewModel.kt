@@ -1,6 +1,7 @@
 package com.example.hxchat.viewmodel.request
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.hxchat.app.network.apiService
@@ -10,6 +11,7 @@ import com.example.hxchat.data.repository.HttpRequestCoroutline
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import me.hgj.jetpackmvvm.ext.request
 import me.hgj.jetpackmvvm.state.ResultState
+import org.greenrobot.eventbus.EventBus
 
 
 /**
@@ -23,8 +25,8 @@ class RequestFriendsViewModel : BaseViewModel(){
      * 获取用户的好友列表
      */
     fun getfriends(){
-        request({ apiService.getFriends()},{
+        request({ apiService.getFriends()},
             friendsData
-        })
+        )
     }
 }
