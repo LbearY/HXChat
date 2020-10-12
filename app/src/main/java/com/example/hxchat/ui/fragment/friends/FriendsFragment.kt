@@ -49,6 +49,10 @@ class FriendsFragment:BaseFragment<FriendsViewModel, FragmentFriendsBinding>(), 
         mDatabind.vm = requestFriendsViewModel
         tvTitle.text = "好友"
 
+        ivRight.setImageResource(R.drawable.btn_search_selector)
+        ivRight.setOnClickListener(this)
+
+
         srl.setColorSchemeResources(R.color.colorAccent)
 
         rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -89,7 +93,13 @@ class FriendsFragment:BaseFragment<FriendsViewModel, FragmentFriendsBinding>(), 
         }
     }
 
-    override fun onClick(p0: View?) {
+    private fun clickSearch(){
 
+    }
+
+    override fun onClick(v: View?) {
+        when(v?.id){
+            R.id.ivRight -> clickSearch()
+        }
     }
 }

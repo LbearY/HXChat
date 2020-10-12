@@ -3,6 +3,7 @@ package com.example.hxchat.app.base
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.StringRes
 import androidx.databinding.ViewDataBinding
 import com.example.hxchat.app.Constants
 import com.example.hxchat.app.event.AppViewModel
@@ -11,6 +12,7 @@ import com.example.hxchat.app.ext.dismissLoadingExt
 import com.example.hxchat.app.ext.hideSoftKeyboard
 import com.example.hxchat.app.ext.showLoadingExt
 import com.example.hxchat.app.util.Event
+import com.example.hxchat.app.util.ToastUtils
 import me.hgj.jetpackmvvm.base.fragment.BaseVmDbFragment
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import me.hgj.jetpackmvvm.ext.getAppViewModel
@@ -58,6 +60,10 @@ abstract class BaseFragment<VM : BaseViewModel, DB: ViewDataBinding>  : BaseVmDb
      */
     override fun showLoading(message: String) {
         showLoadingExt(message)
+    }
+
+    fun showToast(@StringRes resId: Int) {
+        ToastUtils.showToast(this.context, resId)
     }
 
     override fun dismissLoading() {
