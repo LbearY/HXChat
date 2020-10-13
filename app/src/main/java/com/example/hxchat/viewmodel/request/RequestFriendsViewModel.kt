@@ -25,8 +25,19 @@ class RequestFriendsViewModel : BaseViewModel(){
      * 获取用户的好友列表
      */
     fun getfriends(){
+        /**
         request({ apiService.getFriends()},
             friendsData
-        )
+        )*/
+        val user = User("1435343052@qq.com", "pbihao", "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1602560792178&di=e495ca3c2ba592c1c52e5668bf7169a7&imgtype=0&src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202006%2F22%2F20200622133909_rftue.thumb.400_0.jpeg",
+        signature = "好累啊", remark = "彭博濠")
+
+        val list = ArrayList<User>()
+        list.add(user)
+        list.add(user)
+        list.add(user)
+        val res = ResultState.Success<ArrayList<User>>(list)
+        friendsData.postValue(res)
+
     }
 }

@@ -1,9 +1,11 @@
 package com.example.hxchat.ui.fragment.search
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.widget.TextView
@@ -13,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.example.hxchat.R
 import com.example.hxchat.app.base.BaseFragment
+import com.example.hxchat.app.ext.hideSoftKeyboard
 import com.example.hxchat.app.util.StringUtils
 import com.example.hxchat.data.model.bean.User
 import com.example.hxchat.databinding.FragmentSearchBinding
@@ -38,13 +41,20 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>(){
     var keyword : String? = null
 
     override fun layoutId(): Int = R.layout.fragment_search
+
     override fun initView(savedInstanceState: Bundle?) {
         mDatabind.rvm = requestSearchViewModel
+        mDatabind.click = ProxyClick()
 
         srl.setColorSchemeResources(R.color.colorAccent)
         srl.setOnRefreshListener { search(keyword) }
 
-        etSearch.text = null
+        etSearch.setOnTouchListener{v, event ->
+            when (event.action){
+                MotionEvent.ACTION_UP -> clickRightClear(etSearch, event)
+            }
+            false
+        }
         etSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
 
@@ -100,9 +110,20 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>(){
 
     }
 
-    inner class ProxyClick(){
+    inner class ProxyClick{
         fun clickBack(){
+            Log.d("back","点击了返回按钮")
+            hideSoftKeyboard(activity)
             nav().navigateUp()
         }
+    }
+
+    private fun clickRightClear(tv: TextView, event: MotionEvent): Boolean {
+        val drawableRight = tv.compoundDrawables[2]
+        if (drawableRight != null && event.rawX >= tv.right - drawableRight.bounds.width()) {
+            tv.text = null
+            return true
+        }
+        return false
     }
 }

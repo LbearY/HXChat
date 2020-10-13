@@ -26,6 +26,8 @@ import com.example.hxchat.viewmodel.state.UsersViewModel
 import com.king.frame.mvvmframe.bean.Resource
 import kotlinx.android.synthetic.main.fragment_friends.*
 import kotlinx.android.synthetic.main.home_toolbar.*
+import me.hgj.jetpackmvvm.ext.nav
+import me.hgj.jetpackmvvm.ext.navigateAction
 import me.hgj.jetpackmvvm.ext.parseState
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -84,7 +86,10 @@ class FriendsFragment:BaseFragment<FriendsViewModel, FragmentFriendsBinding>(), 
     }
 
     fun clickItem(data: User){
-
+        nav().navigateAction(R.id.action_mainfragment_to_friendUserInfoFragment, Bundle().apply {
+            putParcelable("user", data)
+            putBoolean("isAlreadyFriend", true)
+        })
     }
 
     private fun setEmpty(){
@@ -94,7 +99,7 @@ class FriendsFragment:BaseFragment<FriendsViewModel, FragmentFriendsBinding>(), 
     }
 
     private fun clickSearch(){
-
+        nav().navigateAction(R.id.action_mainfragment_to_searchFragment)
     }
 
     override fun onClick(v: View?) {
