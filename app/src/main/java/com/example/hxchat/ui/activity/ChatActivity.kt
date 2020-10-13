@@ -3,6 +3,7 @@ package com.example.hxchat.ui.activity.chat
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.activity.viewModels
@@ -35,7 +36,7 @@ import org.greenrobot.eventbus.ThreadMode
  * on 2020/10/4
  */
 
-class ChatActivity : BaseActivity<ChatViewModel, FragmentChatBinding>(){
+class ChatActivity : BaseActivity<ChatViewModel, FragmentChatBinding>(), View.OnClickListener{
     var friendEmail : String = ""
     var showName : String? = null
     var avatar : String? = null
@@ -62,6 +63,8 @@ class ChatActivity : BaseActivity<ChatViewModel, FragmentChatBinding>(){
             messageViewModel.queryMessageByFriendId(getUserEmail(), friendEmail, curPage, Constants.PAGE_SIZE)
         }
 
+        ivLeft.setOnClickListener(this)
+        tvSend.setOnClickListener(this)
 
         KeyboardUtils.registerSoftInputChangedListener(this) {
             if(it>0){
@@ -187,7 +190,7 @@ class ChatActivity : BaseActivity<ChatViewModel, FragmentChatBinding>(){
 
     }
 
-    private fun clickSend(){
+     private fun clickSend(){
         message = etContent.text.toString()
         message?.let {
             requestMessageViewModel.sendMessage(friendEmail, it, MessageType.TEXT)
@@ -195,14 +198,14 @@ class ChatActivity : BaseActivity<ChatViewModel, FragmentChatBinding>(){
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
         Event.sendEvent(Operator(Constants.EVENT_UPDATE_MESSAGE_READ))
+        super.onBackPressed()
     }
 
-    fun onClick(v: View){
-        if(v.id == R.id.ivLeft) onBackPressed()
+    override fun onClick(v: View){
         when(v.id){
             R.id.tvSend -> clickSend()
+            R.id.ivLeft -> onBackPressed()
         }
     }
 }
