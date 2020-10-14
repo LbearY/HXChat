@@ -12,6 +12,8 @@ class AppViewModel:BaseViewModel(){
 
     var friendEmail = UnPeekLiveData<String>()
 
+    var isLogin =  UnPeekLiveData<Boolean>()
+
     init {
         userInfo.value = CacheUtil.getUser()
     }

@@ -6,7 +6,10 @@
     <data>
         <variable
             name="data"
-            type="com.example.hxchat.data.model.bean.User" />
+            type="com.example.hxchat.data.model.bean.UserInfo" />
+        <variable
+            name="click"
+            type="com.example.hxchat.ui.fragment.userinfo.meUserInfoFragment.ProxyClick" />
     </data>
     <LinearLayout
         android:orientation="vertical"
@@ -31,7 +34,7 @@
                 android:drawableRight="@drawable/ec_next"
                 android:background="@drawable/white_selector"
                 app:layout_constraintTop_toTopOf="parent"
-                style="@style/OnClick"/>
+                android:onClick="@{()->click.toEditIcon()}" />
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ivAvatar"
                 android:layout_width="@dimen/size_60dp"
@@ -60,6 +63,7 @@
                 android:drawablePadding="@dimen/size_4dp"
                 android:drawableRight="@drawable/ec_next"
                 android:background="@drawable/white_selector"
+                android:onClick="@{()->click.toEditNickname()}"
                 app:layout_constraintTop_toBottomOf="@+id/tvLabelAvatar" />
             <TextView
                 android:id="@+id/tvNickname"
@@ -68,7 +72,7 @@
                 android:layout_marginRight="@dimen/size_40dp"
                 android:textColor="@color/text_80"
                 android:gravity="center_vertical"
-                android:text="@{data.showName}"
+                android:text="@{data.nickname}"
                 tools:text="Pbihao"
                 app:layout_constraintTop_toBottomOf="@+id/tvLabelAvatar"
                 app:layout_constraintRight_toRightOf="parent"
@@ -115,6 +119,7 @@
                 android:drawablePadding="@dimen/size_4dp"
                 android:drawableRight="@drawable/ec_next"
                 android:background="@drawable/white_selector"
+                android:onClick="@{()->click.toEditSgnature()}"
                 app:layout_constraintTop_toBottomOf="@+id/tvLabelUsername" />
             <TextView
                 android:id="@+id/tvSignature"
@@ -141,7 +146,8 @@
                 android:text="@string/logout"
                 android:textSize="@dimen/size_16sp"
                 android:background="@drawable/btn_bg_selector"
-                app:layout_constraintTop_toBottomOf="@+id/tvLabelSignature" />
+                app:layout_constraintTop_toBottomOf="@+id/tvLabelSignature"
+                android:onClick="@{()->click.quitLogin()}"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>

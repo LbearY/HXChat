@@ -18,8 +18,15 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
         <action
-            android:id="@+id/action_mainfragment_to_friendUserInfoFragment"
-            app:destination="@id/friendUserInfoFragment"
+        android:id="@+id/action_mainfragment_to_friendUserInfoFragment"
+        app:destination="@id/friendUserInfoFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_mainfragment_to_meUserInfoFragment"
+            app:destination="@id/meUserInfoFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -69,5 +76,9 @@
         android:id="@+id/friendUserInfoFragment"
         android:name="com.example.hxchat.ui.fragment.userinfo.friendUserInfoFragment"
         android:label="friendUserInfoFragment" />
+    <fragment
+        android:id="@+id/meUserInfoFragment"
+        android:name="com.example.hxchat.ui.fragment.userinfo.meUserInfoFragment"
+        android:label="meUserInfoFragment" />
 
 </navigation>

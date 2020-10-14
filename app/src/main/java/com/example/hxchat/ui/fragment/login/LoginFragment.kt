@@ -49,6 +49,7 @@ class LoginFragment : BaseFragment<LoginRegisterViewModel, FragmentLoginBinding>
                 CacheUtil.setUser(it)
                 CacheUtil.setIsLogin(true)
                 appViewModel.userInfo.postValue(it)
+                appViewModel.isLogin.postValue(true)
                 nav().navigateUp()
             }, {
                 showMessage(it.errorMsg)
