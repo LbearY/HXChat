@@ -7,13 +7,6 @@ object Constants {
 
 
 
-
-    //---------------------------------------------
-
-    const val TAG = "Jenly"
-
-    //---------------------------------------------
-
     const val KEY_TITLE = "key_title"
 
     const val KEY_URL = "key_url"
@@ -81,6 +74,9 @@ object Constants {
     const val PAGE_SIZE = 20
 
     const val DEFAULT_DIR =  ".EasyChat/"
+    //--------------------------------------------
+    const val ChangeMeNickName = 0
+    const val ChangeMeSignature = 1
 
     //---------------------------------------------
 

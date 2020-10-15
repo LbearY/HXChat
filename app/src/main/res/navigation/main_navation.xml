@@ -79,6 +79,18 @@
     <fragment
         android:id="@+id/meUserInfoFragment"
         android:name="com.example.hxchat.ui.fragment.userinfo.meUserInfoFragment"
-        android:label="meUserInfoFragment" />
+        android:label="meUserInfoFragment">
+        <action
+            android:id="@+id/action_meUserInfoFragment_to_changeUserInfoFragment"
+            app:destination="@id/changeUserInfoFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/changeUserInfoFragment"
+        android:name="com.example.hxchat.ui.fragment.userinfo.changeUserInfoFragment"
+        android:label="changeUserInfoFragment" />
 
 </navigation>

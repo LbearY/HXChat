@@ -18,6 +18,7 @@ import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import me.hgj.jetpackmvvm.ext.getAppViewModel
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import com.tbruyelle.rxpermissions2.RxPermissions
 
 /**
  *Created by Pbihao
@@ -27,6 +28,7 @@ import org.greenrobot.eventbus.ThreadMode
 abstract class BaseFragment<VM : BaseViewModel, DB: ViewDataBinding>  : BaseVmDbFragment<VM, DB>(){
     val appViewModel: AppViewModel by lazy{getAppViewModel<AppViewModel>()}
     val eventViewModel: EventViewModel by lazy { getAppViewModel<EventViewModel>() }
+    val rxPermission by lazy { RxPermissions(this@BaseFragment) }
 
     abstract override fun layoutId(): Int
 
@@ -41,7 +43,7 @@ abstract class BaseFragment<VM : BaseViewModel, DB: ViewDataBinding>  : BaseVmDb
     /**
      * 实现懒加载
      */
-    override fun lazyLoadData() {    }
+    override fun lazyLoadData() {   }
 
     /**
      * 创建LiveData观察者
