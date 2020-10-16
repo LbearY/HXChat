@@ -1,6 +1,8 @@
 package com.example.hxchat.ui.activity.chat
 
+import android.content.*
 import android.os.Bundle
+import android.os.IBinder
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -19,6 +21,8 @@ import com.example.hxchat.app.util.KeyboardUtils
 import com.example.hxchat.data.model.bean.Operator
 import com.example.hxchat.data.packet.resp.MessageResp
 import com.example.hxchat.databinding.FragmentChatBinding
+import com.example.hxchat.service.JWebSocketClient
+import com.example.hxchat.service.JWebSocketClientService
 import com.example.hxchat.ui.adapter.ChatAdapter
 import com.example.hxchat.ui.adapter.DividerItemDecoration
 import com.example.hxchat.viewmodel.request.RequestMessageViewModel
@@ -30,6 +34,7 @@ import kotlinx.android.synthetic.main.fragment_chat.*
 import me.hgj.jetpackmvvm.ext.parseState
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import timber.log.Timber
 
 /**
  *Created by Pbihao
@@ -52,9 +57,76 @@ class ChatActivity : BaseActivity<ChatViewModel, FragmentChatBinding>(), View.On
     private val requestMessageViewModel: RequestMessageViewModel by viewModels()
     private val messageViewModel : MessageViewModel by lazy {  ViewModelProvider(this).get(MessageViewModel::class.java) }
 
+
+    private var mContext: Context? = null
+    private lateinit var client: JWebSocketClient
+    private lateinit var binder: JWebSocketClientService.JWebSocketClientBinder
+    private lateinit var jWebSClientService: JWebSocketClientService
+    private var chatMessageReceiver: ChatMessageReceiver? = null
+
+    private val serviceConnection: ServiceConnection = object : ServiceConnection {
+        override fun onServiceConnected(componentName: ComponentName, iBinder: IBinder) {
+            Log.e("MainActivity", "服务与活动成功绑定")
+            binder = iBinder as JWebSocketClientService.JWebSocketClientBinder
+            jWebSClientService = binder.getService()
+            client = jWebSClientService.client
+        }
+
+        override fun onServiceDisconnected(componentName: ComponentName) {
+            Log.e("MainActivity", "服务与活动成功断开")
+        }
+    }
+
+    private class ChatMessageReceiver : BroadcastReceiver() {
+        override fun onReceive(
+            context: Context,
+            intent: Intent
+        ) {
+            val message = intent.getStringExtra("message")
+            Log.d("JWebSocketClient", "收到消息:$message")
+        }
+    }
+
+    /**
+     * 绑定服务
+     */
+    private fun bindService() {
+        val bindIntent = Intent(mContext, JWebSocketClientService::class.java)
+        bindService(bindIntent, serviceConnection, BIND_AUTO_CREATE)
+    }
+
+    /**
+     * 启动服务（websocket客户端服务）
+     */
+    private fun startJWebSClientService() {
+        val intent = Intent(mContext, JWebSocketClientService::class.java)
+        startService(intent)
+    }
+
+    /**
+     * 动态注册广播
+     */
+    private fun doRegisterReceiver() {
+        chatMessageReceiver = ChatMessageReceiver()
+        val filter = IntentFilter("com.xch.servicecallback.content")
+        registerReceiver(chatMessageReceiver, filter)
+    }
+
+
     override fun layoutId(): Int = R.layout.fragment_chat
 
     override fun initView(savedInstanceState: Bundle?) {
+
+
+        mContext = this@ChatActivity
+        //启动服务
+        startJWebSClientService()
+        //绑定服务
+        bindService()
+        //注册广播
+        doRegisterReceiver()
+        //检测通知是否开启
+
         tvSend.visibility = View.GONE
 
         srl.setColorSchemeResources(R.color.colorAccent)
@@ -192,6 +264,7 @@ class ChatActivity : BaseActivity<ChatViewModel, FragmentChatBinding>(), View.On
 
      private fun clickSend(){
         message = etContent.text.toString()
+        jWebSClientService.sendMsg(message)
         message?.let {
             requestMessageViewModel.sendMessage(friendEmail, it, MessageType.TEXT)
         }
