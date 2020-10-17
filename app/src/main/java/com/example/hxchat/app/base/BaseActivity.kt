@@ -90,13 +90,7 @@ abstract class BaseActivity<VM: BaseViewModel, DB : ViewDataBinding> :BaseVmDbAc
         isStop = true
     }
 
-    /**
-     * 处理适配失败时候的问题
-     */
-    override fun getResources(): Resources {
-        AutoSizeCompat.autoConvertDensityOfGlobal(super.getResources())
-        return super.getResources()
-    }
+
 
     fun getUserEmail() = appViewModel.userInfo.value?.email ?: ""
     fun getUserAvatar() = appViewModel.userInfo.value?.icon ?: ""

@@ -50,7 +50,7 @@
                 android:layout_marginLeft="@dimen/size_6dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toRightOf="@+id/ivAvatar"/>
-            <TextView
+            <com.vanniktech.emoji.EmojiTextView
                 android:id="@+id/tvMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
