@@ -1,6 +1,8 @@
 package com.example.hxchat.ui.activity.chat
 
+import android.content.*
 import android.os.Bundle
+import android.os.IBinder
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -19,6 +21,8 @@ import com.example.hxchat.app.util.KeyboardUtils
 import com.example.hxchat.data.model.bean.Operator
 import com.example.hxchat.data.packet.resp.MessageResp
 import com.example.hxchat.databinding.FragmentChatBinding
+import com.example.hxchat.service.JWebSocketClient
+import com.example.hxchat.service.JWebSocketClientService
 import com.example.hxchat.ui.adapter.ChatAdapter
 import com.example.hxchat.ui.adapter.DividerItemDecoration
 import com.example.hxchat.viewmodel.request.RequestMessageViewModel
@@ -30,6 +34,7 @@ import kotlinx.android.synthetic.main.fragment_chat.*
 import me.hgj.jetpackmvvm.ext.parseState
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import timber.log.Timber
 
 /**
  *Created by Pbihao
@@ -52,9 +57,13 @@ class ChatActivity : BaseActivity<ChatViewModel, FragmentChatBinding>(), View.On
     private val requestMessageViewModel: RequestMessageViewModel by viewModels()
     private val messageViewModel : MessageViewModel by lazy {  ViewModelProvider(this).get(MessageViewModel::class.java) }
 
+
+
+
     override fun layoutId(): Int = R.layout.fragment_chat
 
     override fun initView(savedInstanceState: Bundle?) {
+
         tvSend.visibility = View.GONE
 
         srl.setColorSchemeResources(R.color.colorAccent)
