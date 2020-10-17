@@ -2,6 +2,7 @@ package com.example.hxchat.viewmodel.request
 
 import androidx.lifecycle.MutableLiveData
 import com.example.hxchat.app.network.apiService
+import com.example.hxchat.app.util.Event
 import com.example.hxchat.data.model.bean.UserInfo
 import com.example.hxchat.data.packet.req.MessageReq
 import com.example.hxchat.data.packet.resp.MessageResp
@@ -27,6 +28,6 @@ class RequestMessageViewModel : BaseViewModel(){
      * 发送消息
      */
     fun sendMessage(receiver: String,message: String,messageType: Int){
-
+        Event.sendEvent(MessageReq(receiver, message, messageType))
     }
 }

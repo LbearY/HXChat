@@ -3,11 +3,13 @@ package com.example.hxchat.service;
 import android.annotation.SuppressLint;
 import android.app.KeyguardManager;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Handler;
@@ -15,15 +17,21 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import com.example.hxchat.R;
 import com.example.hxchat.app.util.Event;
+import com.example.hxchat.data.packet.req.MessageReq;
 import com.example.hxchat.data.packet.resp.MessageResp;
 import com.example.hxchat.ui.activity.MainActivity;
 import com.example.hxchat.util.Util;
+import com.google.gson.Gson;
+import com.king.easychat.netty.packet.Packet;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
@@ -34,14 +42,14 @@ import timber.log.Timber;
 public class JWebSocketClientService extends Service {
     public JWebSocketClient client;
     private JWebSocketClientBinder mBinder = new JWebSocketClientBinder();
-    private final static int GRAY_SERVICE_ID = 1;
+    private final static int GRAY_SERVICE_ID = 1001;
     //灰色保活
     public static class GrayInnerService extends Service {
 
         @Override
         public int onStartCommand(Intent intent, int flags, int startId) {
-//            startForeground(GRAY_SERVICE_ID, new Notification());
-//            stopForeground(true);
+            startForeground(GRAY_SERVICE_ID, new Notification());
+            stopForeground(true);
             stopSelf();
             return super.onStartCommand(intent, flags, startId);
         }
@@ -80,15 +88,17 @@ public class JWebSocketClientService extends Service {
 
     @Override
     public void onCreate() {
+        Event.INSTANCE.registerEvent(this);
         super.onCreate();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         //初始化websocket
-        initSocketClient();
+        initSocketClient("eyJhbGciOiJkaXIiLCJjdHkiOiJKV1QiLCJlbmMiOiJBMTI4R0NNIiwidHlwIjoiSldUIn0..OngJxY2FhYjTA_ra.-rGt8nZl6aTrlQmx6rEyuQeNAvznLH6nxteKbonPTQihqUwDP8MBMj9uRwCMW-m2IG27O-waouokcrnwINIbWHTgFcLtXVY6I6R3LmM4aLcIXb22bZaTYeTwjF4wUUnO4IWr6JO6DdLyfHfheug1J--RICnrFgkc8ZT_xdb6tOgdh3Tb4ftSt3F6PuuBRLmLAqlReTc4GyO2SUwOtR-2kJU1_mSmZ7at7WQdihlCEqhqTWZW6sgE8nSIjgElAZstIW6-nx1bPz7_adOChPHSGMlAQKtEWbHSa79MuhtBuGjHu3gdLATYAPmJdpvk41K_raNJO286AeYH_X6xP4elezRir2ky.qyajgL0cX750rmAC97JQbA");
         mHandler.postDelayed(heartBeatRunnable, HEART_BEAT_RATE);//开启心跳检测
-
+        NotificationChannel notificationChannel= null;
 
         //设置service为前台服务，提高优先级
         if (Build.VERSION.SDK_INT < 18) {
@@ -101,7 +111,25 @@ public class JWebSocketClientService extends Service {
             startForeground(GRAY_SERVICE_ID, new Notification());
         }else{
             //Android7.0以上app启动后通知栏会出现一条"正在运行"的通知
-//            startForeground(GRAY_SERVICE_ID, new Notification());
+            String CHANNEL_ONE_ID = "CHANNEL_ONE_ID";
+            String CHANNEL_ONE_NAME= "CHANNEL_ONE_ID";
+            notificationChannel= new NotificationChannel(CHANNEL_ONE_ID,
+                    CHANNEL_ONE_NAME, NotificationManager.IMPORTANCE_HIGH);
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.setShowBadge(true);
+            notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+            NotificationManager manager= (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            manager.createNotificationChannel(notificationChannel);
+            PendingIntent pendingIntent= PendingIntent.getActivity(this, 0, intent, 0);
+            Notification notification= new Notification.Builder(this).setChannelId(CHANNEL_ONE_ID)
+                    .setTicker("Nature")
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setContentTitle("HXChat")
+                    .setContentIntent(pendingIntent)
+                    .setContentText("Running~")
+                    .build();
+            startForeground(GRAY_SERVICE_ID, notification);
         }
 
         acquireWakeLock();
@@ -111,6 +139,7 @@ public class JWebSocketClientService extends Service {
 
     @Override
     public void onDestroy() {
+        Event.INSTANCE.unregisterEvent(this);
         closeConnect();
         super.onDestroy();
     }
@@ -122,21 +151,17 @@ public class JWebSocketClientService extends Service {
     /**
      * 初始化websocket连接
      */
-    private void initSocketClient() {
-        String token = "?token=eyJhbGciOiJkaXIiLCJjdHkiOiJKV1QiLCJlbmMiOiJBMTI4R0NNIiwidHlwIjoiSldUIn0..3Ubw0lhyMjUTTMoW.cv3Oov2gGE0re3pwvwn8FygBZALbTqLOCJ2ZW3E4ewnshduZeaibJRlmwpOT2dg4TnnpXxPkLvjnQt7o76qrcLzcBU0lkqW64s-ZmifzcJ_og_DbwOtFNyT6KXQ100zxBVlRETmKxBn5IlGjAY6IOdf6g5oNgTHPbl9AkQUo9mGwjUI2cXzcS9cUJgW_Qx8SFOI2-4v_mr3_7DBJQKAJ-2BOIDFtBJY9qXywnF46vrxUd56xNR1mW_yTTcPOzMykUu4mZKSvkhT9jHgkxs_D-J-MgypdmxRFAz8X.e1jJZT-fulaHBcLFz3gtBA";
-        URI uri = URI.create(Util.ws+token);
+    private void initSocketClient(String token) {
+        token = "?token=" + token;
+        URI uri = URI.create(Util.ws + token);
         Log.d("JWebSocketClientService","访问网址:" + uri);
         client = new JWebSocketClient(uri) {
             @Override
             public void onMessage(String message) {
                 Log.e("JWebSocketClientService", "收到的消息：" + message);
-//                Event.INSTANCE.sendEvent(new MessageResp("","", message,false,0), true);
-                Intent intent = new Intent();
-                intent.setAction("com.xch.servicecallback.content");
-                intent.putExtra("message", message);
-                sendBroadcast(intent);
-
-                checkLockAndShowNotification(message);
+                Gson gson = new Gson();
+                MessageResp messageResp = gson.fromJson(message, MessageResp.class);
+                Event.INSTANCE.sendEvent(messageResp, false);
             }
 
             @Override
@@ -171,10 +196,12 @@ public class JWebSocketClientService extends Service {
      *
      * @param msg
      */
-    public void sendMsg(String msg) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void sendMsg(MessageReq msg) {
         if (null != client) {
-            Log.e("JWebSocketClientService", "发送的消息：" + msg);
-            client.send(msg);
+            Gson gson = new Gson();
+            Log.e("JWebSocketClientService", "发送的消息：" + msg.toString());
+            client.send(gson.toJson(msg));
         }
     }
 
@@ -257,7 +284,7 @@ public class JWebSocketClientService extends Service {
                 }
             } else {
                 //如果client已为空，重新初始化连接
-                initSocketClient();
+                initSocketClient("");
             }
             //每隔一定的时间，对长连接进行一次心跳检测
             mHandler.postDelayed(this, HEART_BEAT_RATE);
