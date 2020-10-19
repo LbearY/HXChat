@@ -97,8 +97,8 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: Packet){
-        Log.d("receive", "已拿")
-        Log.d("content", event.toString())
+
+
         when(event.packetType()){
             PacketType.SEND_MESSAGE_RESP -> handleMessageResp(event as MessageResp)
         }

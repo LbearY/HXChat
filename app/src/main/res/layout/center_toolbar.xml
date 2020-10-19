@@ -41,8 +41,7 @@
             android:layout_height="match_parent"
             android:paddingLeft="14dp"
             android:paddingRight="14dp"
-            android:src="@drawable/btn_none"
-            android:onClick="btnOnclick"/>
+            android:src="@drawable/btn_none" />
 
     </LinearLayout>
 
