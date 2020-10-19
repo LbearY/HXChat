@@ -101,7 +101,12 @@ public class JWebSocketClientService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         //初始化websocket
-        String token = Objects.requireNonNull(CacheUtil.INSTANCE.getUser()).getToken();
+        UserInfo user = CacheUtil.INSTANCE.getUser();
+        String token = "default";
+        if (user != null) {
+            token = user.getToken();
+        }
+        Log.d("init", token);
         initSocketClient(token);
         mHandler.postDelayed(heartBeatRunnable, HEART_BEAT_RATE);//开启心跳检测
         NotificationChannel notificationChannel = null;
@@ -288,7 +293,12 @@ public class JWebSocketClientService extends Service {
             Log.e("JWebSocketClientService", "心跳包检测websocket连接状态");
             if (client != null) {
                 if (client.isClosed()) {
-                    String token = Objects.requireNonNull(CacheUtil.INSTANCE.getUser()).getToken();
+                    UserInfo user = CacheUtil.INSTANCE.getUser();
+                    String token = "default";
+                    if (user != null) {
+                        token = user.getToken();
+                    }
+                    Log.d("rews", token);
                     initSocketClient(token);
 //                    reconnectWs();
                 }
