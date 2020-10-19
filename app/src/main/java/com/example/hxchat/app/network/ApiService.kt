@@ -41,6 +41,22 @@ interface ApiService {
     suspend fun getFriends(): ApiResponse<ArrayList<User>>
 
     /**
+     * 搜索用户
+     */
+    @GET("user")
+    suspend fun search(
+        @Query("nickname") nickname: String
+    ): ApiResponse<ArrayList<User>>
+
+    /**
+     * 添加好友
+     */
+    @POST("friend")
+    suspend fun addFriend(
+        @Body body: RequestBody
+    ): ApiResponse<User>
+
+    /**
      * 发送消息
      */
     @POST

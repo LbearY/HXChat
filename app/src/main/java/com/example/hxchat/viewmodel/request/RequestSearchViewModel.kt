@@ -28,7 +28,10 @@ class RequestSearchViewModel : BaseViewModel(){
      * 用户输入一串字符串在数据库中寻找和这个字符串最匹配的结果（最多6个，然后返回回来
      * 这个请求需要显示等待框，所以如果超过一定的时间没有响应需要提前推出）
      */
-    fun search(str: String){
-
+    fun search(nickname: String) {
+        request(
+            { apiService.search(nickname) },
+            searchResultData
+        )
     }
 }
