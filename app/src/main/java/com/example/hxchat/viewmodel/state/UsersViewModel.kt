@@ -10,7 +10,6 @@ import com.example.hxchat.data.dao.AppDatabase
 import com.example.hxchat.data.dao.MessageDao
 import com.example.hxchat.data.dao.RecentChatDao
 import com.example.hxchat.data.dao.UserDao
-import com.example.hxchat.data.packet.resp.MessageResp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

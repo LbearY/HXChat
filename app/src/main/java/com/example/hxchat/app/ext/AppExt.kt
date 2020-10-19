@@ -1,6 +1,8 @@
 package com.example.hxchat.app.ext
 
+import android.app.Activity
 import android.text.TextUtils
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import com.afollestad.materialdialogs.MaterialDialog
@@ -9,6 +11,7 @@ import com.afollestad.materialdialogs.actions.getActionButton
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.example.hxchat.R
 import com.example.hxchat.app.util.CacheUtil
+import com.king.frame.mvvmframe.base.BaseActivity
 import me.hgj.jetpackmvvm.ext.navigateAction
 import java.io.BufferedReader
 import java.io.FileReader

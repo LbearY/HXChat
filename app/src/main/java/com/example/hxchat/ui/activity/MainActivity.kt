@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import androidx.activity.OnBackPressedCallback
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.hxchat.R
 import com.example.hxchat.app.Constants
@@ -71,14 +72,18 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
 
     override fun initView(savedInstanceState: Bundle?) {
         mContext = this@MainActivity
-        //启动服务
-        startJWebSClientService()
-        //绑定服务
-        bindService()
+
     }
 
     override fun createObserver() {
-        super.createObserver()
+        appViewModel.userInfo.observe(this, Observer {
+            if(appViewModel.isLogin.value!!){
+                //启动服务
+                startJWebSClientService()
+                //绑定服务
+                bindService()
+            }
+        })
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

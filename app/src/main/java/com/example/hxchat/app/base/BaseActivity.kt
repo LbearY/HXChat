@@ -4,6 +4,7 @@ import android.content.res.Resources
 import android.os.Bundle
 import androidx.annotation.StringRes
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.Lifecycle
 import com.example.hxchat.R
 import com.example.hxchat.app.Constants
 import com.example.hxchat.app.event.AppViewModel
@@ -57,6 +58,7 @@ abstract class BaseActivity<VM: BaseViewModel, DB : ViewDataBinding> :BaseVmDbAc
     fun showToast(@StringRes resId: Int) {
         ToastUtils.showToast(this, resId)
     }
+
 
 
     /**

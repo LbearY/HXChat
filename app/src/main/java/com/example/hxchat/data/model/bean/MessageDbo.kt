@@ -30,7 +30,7 @@ open class MessageDbo(var email : String,
     }
 
     fun toMessageResp(): MessageResp{
-        var resp = MessageResp(sender,senderName,message,send,messageType)
+        var resp = MessageResp(sender, receiver, senderName,message,send,messageType)
         resp.dateTime = dateTime
         return resp
     }

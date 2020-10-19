@@ -5,7 +5,6 @@ import com.example.hxchat.app.network.apiService
 import com.example.hxchat.data.model.bean.User
 import com.example.hxchat.data.model.bean.UserInfo
 import com.example.hxchat.data.packet.req.MessageReq
-import com.example.hxchat.data.packet.resp.MessageResp
 import com.example.hxchat.data.repository.HttpRequestCoroutline
 import com.king.easychat.netty.packet.MessageType
 import kotlinx.coroutines.Dispatchers

@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.chad.library.adapter.base.entity.MultiItemEntity
+import com.example.hxchat.app.util.CacheUtil
 import com.example.hxchat.data.model.bean.MessageDbo
 import com.example.hxchat.data.model.bean.RecentChat
 import com.king.easychat.netty.packet.MessageType
@@ -19,11 +20,18 @@ import kotlinx.android.parcel.Parcelize
  * description:
  */
 @Parcelize
-class MessageResp(val sender : String?,val senderName : String?,val message : String, val isSender: Boolean = false, val messageType : Int) : Packet(), MultiItemEntity,
+class MessageResp(val sender : String?, val receiver:String?,val senderName : String?,val message : String, var isSender: Boolean = false, val messageType : Int) : Packet(), MultiItemEntity,
     Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
+
+    init {
+        if(sender == CacheUtil.getUser()?.email){
+            this.isSender = true
+        }
+    }
+
 
     companion object{
         const val Left = 1
