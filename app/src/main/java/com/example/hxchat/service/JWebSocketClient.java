@@ -7,12 +7,13 @@ import org.java_websocket.drafts.Draft_6455;
 import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
+import java.util.Map;
 
 import timber.log.Timber;
 
 public class JWebSocketClient extends WebSocketClient {
-    public JWebSocketClient(URI serverUri) {
-        super(serverUri, new Draft_6455());
+    public JWebSocketClient(URI serverUri, Map<String, String> httpHeaders) {
+        super(serverUri, new Draft_6455(), httpHeaders);
     }
 
     @Override
@@ -27,7 +28,7 @@ public class JWebSocketClient extends WebSocketClient {
 
     @Override
     public void onClose(int code, String reason, boolean remote) {
-        Log.e("JWebSocketClient", "onClose()");
+        Log.e("JWebSocketClient", "onClose():" + reason);
     }
 
     @Override

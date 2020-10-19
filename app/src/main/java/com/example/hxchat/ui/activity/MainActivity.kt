@@ -75,7 +75,6 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         startJWebSClientService()
         //绑定服务
         bindService()
-        //注册广播
     }
 
     override fun createObserver() {

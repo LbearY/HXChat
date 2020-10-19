@@ -21,7 +21,9 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import com.example.hxchat.R;
+import com.example.hxchat.app.util.CacheUtil;
 import com.example.hxchat.app.util.Event;
+import com.example.hxchat.data.model.bean.UserInfo;
 import com.example.hxchat.data.packet.req.MessageReq;
 import com.example.hxchat.data.packet.resp.MessageResp;
 import com.example.hxchat.ui.activity.MainActivity;
@@ -35,6 +37,9 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 import timber.log.Timber;
 
@@ -96,15 +101,16 @@ public class JWebSocketClientService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         //初始化websocket
-        initSocketClient("eyJhbGciOiJkaXIiLCJjdHkiOiJKV1QiLCJlbmMiOiJBMTI4R0NNIiwidHlwIjoiSldUIn0..OngJxY2FhYjTA_ra.-rGt8nZl6aTrlQmx6rEyuQeNAvznLH6nxteKbonPTQihqUwDP8MBMj9uRwCMW-m2IG27O-waouokcrnwINIbWHTgFcLtXVY6I6R3LmM4aLcIXb22bZaTYeTwjF4wUUnO4IWr6JO6DdLyfHfheug1J--RICnrFgkc8ZT_xdb6tOgdh3Tb4ftSt3F6PuuBRLmLAqlReTc4GyO2SUwOtR-2kJU1_mSmZ7at7WQdihlCEqhqTWZW6sgE8nSIjgElAZstIW6-nx1bPz7_adOChPHSGMlAQKtEWbHSa79MuhtBuGjHu3gdLATYAPmJdpvk41K_raNJO286AeYH_X6xP4elezRir2ky.qyajgL0cX750rmAC97JQbA");
+        String token = Objects.requireNonNull(CacheUtil.INSTANCE.getUser()).getToken();
+        initSocketClient(token);
         mHandler.postDelayed(heartBeatRunnable, HEART_BEAT_RATE);//开启心跳检测
-        NotificationChannel notificationChannel= null;
+        NotificationChannel notificationChannel = null;
 
         //设置service为前台服务，提高优先级
         if (Build.VERSION.SDK_INT < 18) {
             //Android4.3以下 ，隐藏Notification上的图标
             startForeground(GRAY_SERVICE_ID, new Notification());
-        } else if(Build.VERSION.SDK_INT>18 && Build.VERSION.SDK_INT<25){
+        } else if (Build.VERSION.SDK_INT > 18 && Build.VERSION.SDK_INT < 25) {
             //Android4.3 - Android7.0，隐藏Notification上的图标
             Intent innerIntent = new Intent(this, GrayInnerService.class);
             startService(innerIntent);
@@ -152,10 +158,12 @@ public class JWebSocketClientService extends Service {
      * 初始化websocket连接
      */
     private void initSocketClient(String token) {
-        token = "?token=" + token;
-        URI uri = URI.create(Util.ws + token);
-        Log.d("JWebSocketClientService","访问网址:" + uri);
-        client = new JWebSocketClient(uri) {
+        token = "Bearer " + token;
+        Map<String, String> header = new HashMap<>();
+        header.put("Authorization", token);
+        URI uri = URI.create(Util.ws);
+        Log.d("JWebSocketClientService", "访问网址:" + uri);
+        client = new JWebSocketClient(uri, header) {
             @Override
             public void onMessage(String message) {
                 Log.e("JWebSocketClientService", "收到的消息：" + message);
@@ -280,11 +288,14 @@ public class JWebSocketClientService extends Service {
             Log.e("JWebSocketClientService", "心跳包检测websocket连接状态");
             if (client != null) {
                 if (client.isClosed()) {
-                    reconnectWs();
+                    String token = Objects.requireNonNull(CacheUtil.INSTANCE.getUser()).getToken();
+                    initSocketClient(token);
+//                    reconnectWs();
                 }
             } else {
                 //如果client已为空，重新初始化连接
-                initSocketClient("");
+                String token = Objects.requireNonNull(CacheUtil.INSTANCE.getUser()).getToken();
+                initSocketClient(token);
             }
             //每隔一定的时间，对长连接进行一次心跳检测
             mHandler.postDelayed(this, HEART_BEAT_RATE);
