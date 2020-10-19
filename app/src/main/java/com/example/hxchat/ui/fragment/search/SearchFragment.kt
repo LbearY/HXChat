@@ -26,6 +26,7 @@ import com.example.hxchat.viewmodel.state.SearchViewModel
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.coroutines.flow.combine
 import me.hgj.jetpackmvvm.ext.nav
+import me.hgj.jetpackmvvm.ext.navigateAction
 import me.hgj.jetpackmvvm.ext.parseState
 
 
@@ -92,6 +93,8 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>(){
             parseState(resultState, {
                 srl.isRefreshing = false
                 mAdapter.replaceData(it)
+            },{
+                srl.isRefreshing = false
             })
         })
     }
