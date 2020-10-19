@@ -18,7 +18,7 @@ class MyHeadInterceptor  : Interceptor{
     override fun intercept(chain: Interceptor.Chain): Response {
         val builder = chain.request().newBuilder()
         var user = CacheUtil.getUser()
-        builder.addHeader("token", user?.token ?: "").build()
+        builder.addHeader("Authorization", "Bearer " + user?.token).build()
         builder.addHeader("isLogin", CacheUtil.isLogin().toString()).build()
         return chain.proceed(builder.build())
     }
