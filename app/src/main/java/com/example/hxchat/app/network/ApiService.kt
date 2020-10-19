@@ -37,8 +37,8 @@ interface ApiService {
     /**
      * 获得好友列表
      */
-    @GET("friend/")
-    suspend fun getFriends() : ApiResponse<ArrayList<User>>
+    @GET("friend")
+    suspend fun getFriends(): ApiResponse<ArrayList<User>>
 
     /**
      * 发送消息
