@@ -25,6 +25,9 @@ import com.example.hxchat.viewmodel.state.MessageViewModel
 import com.example.hxchat.viewmodel.state.UsersViewModel
 import com.king.frame.mvvmframe.bean.Resource
 import kotlinx.android.synthetic.main.fragment_friends.*
+import kotlinx.android.synthetic.main.fragment_friends.rv
+import kotlinx.android.synthetic.main.fragment_friends.srl
+import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.home_toolbar.*
 import me.hgj.jetpackmvvm.ext.nav
 import me.hgj.jetpackmvvm.ext.navigateAction
@@ -71,8 +74,13 @@ class FriendsFragment:BaseFragment<FriendsViewModel, FragmentFriendsBinding>(), 
     override fun createObserver() {
         requestFriendsViewModel.friendsData.observe(viewLifecycleOwner, Observer { resultState ->
             parseState(resultState, {
-                mAdapter.replaceData(it)
-                usersViewModel.saveUsers(it)
+                Log.d("it", it.toString())
+                if (it.size > 0) {
+                    mAdapter.replaceData(it)
+                    usersViewModel.saveUsers(it)
+                }
+                srl.isRefreshing = false
+            }, {
                 srl.isRefreshing = false
             })
         })
