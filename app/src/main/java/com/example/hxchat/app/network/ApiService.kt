@@ -21,21 +21,17 @@ interface ApiService {
     /**
      * 登录
      */
-    @FormUrlEncoded
-    @POST("session/")
+    @POST("session")
     suspend fun login(
-        @Field("email") email: String,
-        @Field("password") pwd: String
+        @Body body: RequestBody
     ): ApiResponse<UserInfo>
 
     /**
      * 注册
      */
-    @FormUrlEncoded
-    @POST("user/")
+    @POST("user")
     suspend fun register(
-        @Field("email") email: String,
-        @Field("password") pwd: String
+        @Body body: RequestBody
     ): ApiResponse<Any>
 
     /**
