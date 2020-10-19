@@ -15,7 +15,7 @@ import retrofit2.http.POST
 
 interface ApiService {
     companion object {
-        const val SERVER_URL = "https://37678c1f-29fd-4de7-9cc1-960a64dc4f35.mock.pstmn.io"
+        const val SERVER_URL = "http://www.brotherye.site:8080"
     }
 
     /**
