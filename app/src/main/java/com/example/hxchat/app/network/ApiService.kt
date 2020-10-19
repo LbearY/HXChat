@@ -3,10 +3,10 @@ package com.example.hxchat.app.network
 import com.example.hxchat.data.model.bean.ApiResponse
 import com.example.hxchat.data.model.bean.User
 import com.example.hxchat.data.model.bean.UserInfo
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.POST
+import com.example.hxchat.data.packet.resp.MessageResp
+import me.hgj.jetpackmvvm.state.ResultState
+import okhttp3.RequestBody
+import retrofit2.http.*
 
 /**
  *Created by Pbihao
@@ -15,7 +15,7 @@ import retrofit2.http.POST
 
 interface ApiService {
     companion object {
-        const val SERVER_URL = "https://37678c1f-29fd-4de7-9cc1-960a64dc4f35.mock.pstmn.io"
+        const val SERVER_URL = "http://10.0.3.2:8080"
     }
 
     /**
@@ -59,8 +59,8 @@ interface ApiService {
     /**
      * 发送消息
      */
-    @POST
+    @POST("message")
     suspend fun sendMessage(
-
-    )
+        @Body body: RequestBody
+    ): ApiResponse<MessageResp>
 }
