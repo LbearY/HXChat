@@ -110,7 +110,10 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>(){
     }
 
     fun clickItem(item: User){
-
+        nav().navigateAction(R.id.action_to_searchResultFragment, Bundle().apply {
+            putParcelable("user", item)
+            putBoolean("isAlreadyFriend", false)
+        })
     }
 
     inner class ProxyClick{
