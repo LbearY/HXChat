@@ -54,8 +54,7 @@ fun NavController.jumpByLogin(action: (NavController) -> Unit){
     if (CacheUtil.isLogin()){
         action(this)
     }else{
-        action(this)
-        //this.navigateAction(R.id.action_to_loginFragment)
+        this.navigateAction(R.id.action_to_loginFragment)
     }
 }
 
