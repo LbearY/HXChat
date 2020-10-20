@@ -199,6 +199,8 @@ class ChatActivity : BaseActivity<ChatViewModel, FragmentChatBinding>(){
 
     fun handleMessageResp(resp: MessageResp?){
         resp?.let {
+            resp.isSelf()
+            Log.d("handleMessageResp", resp.isSender.toString())
             if(it.isSender || friendEmail == it.sender){
                 mAdapter.addData(it)
                 //messageViewModel.saveMessage(getUserEmail(), friendEmail, showName, avatar,true,resp)
