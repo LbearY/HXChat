@@ -4,8 +4,10 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.request.RequestCoordinator
 import com.example.hxchat.app.network.apiService
+import com.example.hxchat.app.util.Event.sendEvent
 import com.example.hxchat.data.model.bean.User
 import com.example.hxchat.data.model.bean.UserInfo
+import com.example.hxchat.data.packet.resp.LogoutResp
 import com.example.hxchat.data.repository.HttpRequestCoroutline
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import me.hgj.jetpackmvvm.ext.request

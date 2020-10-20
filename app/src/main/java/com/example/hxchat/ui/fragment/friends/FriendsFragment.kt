@@ -100,6 +100,11 @@ class FriendsFragment:BaseFragment<FriendsViewModel, FragmentFriendsBinding>(), 
         })
     }
 
+    override fun onResume() {
+        requestFriendsViewModel.getfriends()
+        super.onResume()
+    }
+
     private fun setEmpty(){
         if (mAdapter.emptyView == null){
             mAdapter.setEmptyView(R.layout.layout_em, rv)

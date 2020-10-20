@@ -36,8 +36,8 @@ class WelcomeActivity : BaseActivity<BaseViewModel, ActivityWelcomeBinding>() {
 
         CacheUtil.setUser(user)
         CacheUtil.setIsLogin(true)
-        appViewModel.userInfo.postValue(user)
         appViewModel.isLogin.postValue(true)
+        appViewModel.userInfo.postValue(user)
         startActivity(Intent(this, MainActivity::class.java))
         finish()
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
@@ -48,16 +48,16 @@ class WelcomeActivity : BaseActivity<BaseViewModel, ActivityWelcomeBinding>() {
             parseState(resultState,{
                 CacheUtil.setUser(it)
                 CacheUtil.setIsLogin(true)
-                appViewModel.userInfo.postValue(it)
                 appViewModel.isLogin.postValue(true)
+                appViewModel.userInfo.postValue(it)
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
             },{
                 CacheUtil.setUser(null)
                 CacheUtil.setIsLogin(false)
-                appViewModel.userInfo.postValue(null)
                 appViewModel.isLogin.postValue(false)
+                appViewModel.userInfo.postValue(null)
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)

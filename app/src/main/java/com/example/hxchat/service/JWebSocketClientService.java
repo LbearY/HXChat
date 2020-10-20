@@ -152,6 +152,7 @@ public class JWebSocketClientService extends Service {
     public void onDestroy() {
         Event.INSTANCE.unregisterEvent(this);
         closeConnect();
+        mHandler.removeCallbacks(heartBeatRunnable);
         super.onDestroy();
     }
 
@@ -304,7 +305,11 @@ public class JWebSocketClientService extends Service {
                 }
             } else {
                 //如果client已为空，重新初始化连接
-                String token = Objects.requireNonNull(CacheUtil.INSTANCE.getUser()).getToken();
+                UserInfo user = CacheUtil.INSTANCE.getUser();
+                String token = "default";
+                if (user != null) {
+                    token = user.getToken();
+                }
                 initSocketClient(token);
             }
             //每隔一定的时间，对长连接进行一次心跳检测
