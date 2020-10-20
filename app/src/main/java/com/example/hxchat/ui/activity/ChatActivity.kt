@@ -57,14 +57,13 @@ class ChatActivity : BaseActivity<ChatViewModel, FragmentChatBinding>(){
     var isAutoScroll = true
 
     private val requestMessageViewModel: RequestMessageViewModel by viewModels()
-    private val messageViewModel : MessageViewModel by lazy {  ViewModelProvider(this).get(MessageViewModel::class.java) }
+    private val messageViewModel : MessageViewModel by lazy {  MessageViewModel(application) }
 
     private val emojiPopup:EmojiPopup by lazy { EmojiPopup.Builder.fromRootView(findViewById(R.id.rtContent)).build(findViewById(R.id.etContent)) }
 
     override fun layoutId(): Int = R.layout.fragment_chat
 
     override fun initView(savedInstanceState: Bundle?) {
-
         tvSend.visibility = View.GONE
         srl.setColorSchemeResources(R.color.colorAccent)
         srl.setOnRefreshListener {

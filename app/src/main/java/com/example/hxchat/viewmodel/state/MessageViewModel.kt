@@ -2,6 +2,7 @@ package com.example.hxchat.viewmodel.state
 
 import android.app.Application
 import android.os.SystemClock
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -20,6 +21,7 @@ import com.example.hxchat.data.model.bean.*
 import com.example.hxchat.ui.fragment.home.HomeFragment
 import com.king.easychat.netty.packet.MessageType
 import kotlinx.coroutines.withContext
+import me.hgj.jetpackmvvm.callback.livedata.UnPeekLiveData
 
 
 /**
@@ -29,9 +31,9 @@ import kotlinx.coroutines.withContext
 
 open class MessageViewModel(application: Application)  : AndroidViewModel(application){
 
-    var messageLiveData = MutableLiveData<List<MessageResp>>() // 和单个 好友的最近聊天记录
-    var lastMessageLiveData = MutableLiveData<List<Message>>()
-    var totalCountLiveData = MutableLiveData<Int>()
+    var messageLiveData = UnPeekLiveData<List<MessageResp>>() // 和单个 好友的最近聊天记录
+    var lastMessageLiveData = UnPeekLiveData<List<Message>>()
+    var totalCountLiveData = UnPeekLiveData<Int>()
 
 
     fun delay(userEmail:String, sleepTime: Int){
@@ -59,7 +61,6 @@ open class MessageViewModel(application: Application)  : AndroidViewModel(applic
             SystemClock.sleep(sleepTime.toLong())
             val list = withContext(Dispatchers.IO){
                 queryMessageList(userEmail, pageSize)
-
             }
             lastMessageLiveData.postValue(list)
         }

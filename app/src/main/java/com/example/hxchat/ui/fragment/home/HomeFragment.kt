@@ -2,6 +2,7 @@ package com.example.hxchat.ui.fragment.home
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -89,10 +90,12 @@ class HomeFragment: BaseFragment<HomeViewModel, FragmentHomeBinding>(), View.OnC
     override fun createObserver() {
         messageViewModel.run {
             lastMessageLiveData.observe(viewLifecycleOwner, Observer{
+                srl.isRefreshing = false
                 mAdapter.curTime = System.currentTimeMillis()
                 mAdapter.replaceData(it)
             })
             totalCountLiveData.observe(viewLifecycleOwner, Observer {
+                srl.isRefreshing = false
                 onTotalCountCallback?.onTotalCountChanged(it)
             })
         }

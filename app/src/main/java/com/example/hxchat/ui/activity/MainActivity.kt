@@ -32,7 +32,7 @@ import timber.log.Timber
 class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
     override fun layoutId(): Int = R.layout.activity_main
 
-    private val messageViewModel : MessageViewModel by lazy {  ViewModelProvider(this).get(MessageViewModel::class.java) }
+    private val messageViewModel : MessageViewModel by lazy {  MessageViewModel(application) }
     private val usersViewModel: UsersViewModel by lazy { ViewModelProvider(this).get(UsersViewModel::class.java) }
 
     private var mContext: Context? = null
@@ -102,8 +102,6 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: Packet){
-
-
         when(event.packetType()){
             PacketType.SEND_MESSAGE_RESP -> handleMessageResp(event as MessageResp)
         }

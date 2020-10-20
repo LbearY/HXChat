@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import com.example.hxchat.R
 import com.example.hxchat.app.base.BaseActivity
 import com.example.hxchat.app.util.CacheUtil
+import com.example.hxchat.data.model.bean.UserInfo
 import com.example.hxchat.databinding.ActivityWelcomeBinding
 import com.example.hxchat.viewmodel.request.RequestLoginRegisterViewModel
 import kotlinx.android.synthetic.main.activity_welcome.*
@@ -30,7 +31,16 @@ class WelcomeActivity : BaseActivity<BaseViewModel, ActivityWelcomeBinding>() {
             finish()
             return
         }
-        requestLoginRegisterViewModel.login()
+        //requestLoginRegisterViewModel.login()
+        val user = UserInfo("1435343052@qq.com", "pbihao", "https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2902873695,2157267194&fm=111&gp=0.jpg","123", "123", "123","123")
+
+        CacheUtil.setUser(user)
+        CacheUtil.setIsLogin(true)
+        appViewModel.userInfo.postValue(user)
+        appViewModel.isLogin.postValue(true)
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 
     override fun createObserver() {
