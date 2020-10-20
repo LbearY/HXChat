@@ -47,6 +47,7 @@ class meUserInfoFragment: BaseFragment<MeUserInfoViewModel, FragmentMeUserInfoBi
         ivLeft.setOnClickListener{
             nav().navigateUp()
         }
+        userInfo = CacheUtil.getUser()
         mDatabind.data = userInfo
         mDatabind.click = ProxyClick()
     }
