@@ -22,6 +22,7 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 
+
 class MessageResp(val sender : String?,val receiver:String?, val senderName : String?, val message : String, var isSender: Boolean = false, val messageType : Int) : Packet(), MultiItemEntity,
     Parcelable {
 

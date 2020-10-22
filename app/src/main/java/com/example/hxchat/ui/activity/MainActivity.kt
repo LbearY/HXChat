@@ -16,6 +16,7 @@ import com.example.hxchat.R
 import com.example.hxchat.app.Constants
 import com.example.hxchat.app.base.BaseActivity
 import com.example.hxchat.data.model.bean.Operator
+import com.example.hxchat.data.packet.resp.LogoutResp
 import com.example.hxchat.data.packet.resp.MessageResp
 import com.example.hxchat.databinding.ActivityMainBinding
 import com.example.hxchat.service.JWebSocketClient
@@ -63,6 +64,8 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         bindService(bindIntent, serviceConnection, BIND_AUTO_CREATE)
     }
 
+
+
     /**
      * 启动服务（websocket客户端服务）
      */
@@ -72,18 +75,30 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
     }
 
     override fun initView(savedInstanceState: Bundle?) {
-        mContext = this@MainActivity
 
     }
 
     override fun createObserver() {
         appViewModel.userInfo.observe(this, Observer {
-            if(appViewModel.isLogin.value!!){
-                //启动服务
-                startJWebSClientService()
-                //绑定服务
-                bindService()
+            appViewModel.isLogin.value?.let{
+                Log.d("it", "lala")
+                if (it){
+                    mContext = this@MainActivity
+                    Log.d("it:", it.toString())
+                    //启动服务
+                    startJWebSClientService()
+                    //绑定服务
+                    bindService()
+                }
+
             }
+        })
+        eventViewModel.quitLogin.observe(this, Observer {
+
+            Log.d("unbindService", "123")
+            val intent = Intent(mContext, JWebSocketClientService::class.java)
+            unbindService(serviceConnection)
+            stopService(intent)
         })
     }
 

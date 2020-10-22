@@ -11,4 +11,6 @@ import me.hgj.jetpackmvvm.callback.livedata.event.EventLiveData
 class EventViewModel: BaseViewModel(){
     //事件通知
     val statusEvent = EventLiveData<Int>()
+
+    val quitLogin = EventLiveData<Boolean>()
 }

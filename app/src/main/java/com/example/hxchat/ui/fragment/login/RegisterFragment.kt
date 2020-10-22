@@ -45,8 +45,8 @@ class RegisterFragment : BaseFragment<LoginRegisterViewModel, FragmentRegisterBi
             parseState(resultState, {
                 CacheUtil.setUser(it)
                 CacheUtil.setIsLogin(true)
-                appViewModel.userInfo.postValue(it)
                 appViewModel.isLogin.postValue(true)
+                appViewModel.userInfo.postValue(it)
                 nav().navigateAction(R.id.action_registerFrgment_to_mainFragment)
             },{
                 showMessage(it.errorMsg)

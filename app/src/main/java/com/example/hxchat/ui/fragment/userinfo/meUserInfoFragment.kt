@@ -30,7 +30,10 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.example.hxchat.app.util.Event
+import com.example.hxchat.data.packet.resp.LogoutResp
 import com.tbruyelle.rxpermissions2.RxPermissions
 import java.io.File
 
@@ -55,9 +58,11 @@ class meUserInfoFragment: BaseFragment<MeUserInfoViewModel, FragmentMeUserInfoBi
     override fun createObserver() {
         requestLoginRegisterViewModel.requestSucsess.observe(viewLifecycleOwner, Observer { resultState ->
             parseState(resultState, {
+                Log.d("meUserInfo:", "fuck")
                 CacheUtil.setUser(null)
+                CacheUtil.setIsLogin(false)
+                appViewModel.isLogin.postValue(false)
                 appViewModel.userInfo.postValue(null)
-                appViewModel.isLogin.postValue(null)
                 nav().navigateUp()
             }, {
                 showMessage(it.errorMsg)
@@ -124,6 +129,8 @@ class meUserInfoFragment: BaseFragment<MeUserInfoViewModel, FragmentMeUserInfoBi
 
     inner class ProxyClick{
         fun quitLogin(){
+            Log.d("123", "tuichudenglu")
+            eventViewModel.quitLogin.postValue(true)
             requestLoginRegisterViewModel.quitLogin(appViewModel.userInfo.value)
         }
         fun toEditNickname(){
