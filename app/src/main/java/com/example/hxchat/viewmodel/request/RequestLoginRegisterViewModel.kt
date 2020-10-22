@@ -30,7 +30,10 @@ class RequestLoginRegisterViewModel : BaseViewModel(){
     var requestSucsess  = MutableLiveData<ResultState<Boolean>>()
 
     fun login(){
-
+        request(
+            { apiService.login()},
+            loginResult
+        )
     }
 
     fun loginReq(email: String, password: String) {

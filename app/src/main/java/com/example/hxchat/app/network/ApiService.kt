@@ -27,6 +27,13 @@ interface ApiService {
     ): ApiResponse<UserInfo>
 
     /**
+     * 自动登录
+     */
+    @GET("session")
+    suspend fun login(
+    ): ApiResponse<UserInfo>
+
+    /**
      * 注册
      */
     @POST("user")
