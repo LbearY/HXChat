@@ -8,6 +8,7 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
+import com.example.hxchat.app.util.Event.sendEvent
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -166,7 +167,9 @@ class ChatActivity : BaseActivity<ChatViewModel, FragmentChatBinding>(){
 
         requestMessageViewModel.messageReq.observe(this, Observer {resultState ->
             parseState(resultState,{
-                handleMessageResp(it)
+//                handleMessageResp(it)
+                etContent.setText("")
+                sendEvent(it)
             })
         })
     }
@@ -194,6 +197,7 @@ class ChatActivity : BaseActivity<ChatViewModel, FragmentChatBinding>(){
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: MessageResp){
+        Log.d("message", event.toString())
         handleMessageResp(event)
     }
 

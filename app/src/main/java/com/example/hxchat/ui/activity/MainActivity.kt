@@ -25,6 +25,7 @@ import com.example.hxchat.viewmodel.state.MessageViewModel
 import com.example.hxchat.viewmodel.state.UsersViewModel
 import com.king.easychat.netty.packet.Packet
 import com.king.easychat.netty.packet.PacketType
+import kotlinx.android.synthetic.main.fragment_chat.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
@@ -86,12 +87,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         })
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    override fun onMessageEvent(event: Operator){
-        when (event.event) {
-            Constants.EVENT_UPDATE_MESSAGE_READ -> handleMessageRead()
-        }
-    }
+
 
     private fun handleMessageRead(){
         appViewModel.friendEmail.value?.let {
@@ -101,14 +97,38 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    override fun onMessageEvent(event: Operator){
+        when (event.event) {
+            Constants.EVENT_UPDATE_MESSAGE_READ -> handleMessageRead()
+        }
+    }
+    /*
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: Packet){
         when(event.packetType()){
             PacketType.SEND_MESSAGE_RESP -> handleMessageResp(event as MessageResp)
         }
     }
+     */
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: MessageResp){
+        handleMessageResp(event)
+    }
 
     private fun handleMessageResp(data: MessageResp){
-        val read = data.sender == appViewModel.friendEmail.value
-        messageViewModel.saveMessage(getUserEmail(), data.sender!!, data.senderName,null, read, data)
+
+
+        data?.let {
+            Log.d("event", data.toString())
+            data.isSelf()
+            val read = data.sender == appViewModel.friendEmail.value
+            if (!data.isSender){
+                messageViewModel.saveMessage(getUserEmail(), data.sender!!, null,null, read, data)
+            }else{
+                messageViewModel.saveMessage(getUserEmail(), data.receiver!!, null,null, read, data)
+            }
+
+        }
     }
 }

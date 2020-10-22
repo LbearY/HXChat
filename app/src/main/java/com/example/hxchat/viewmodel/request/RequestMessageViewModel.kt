@@ -45,6 +45,5 @@ class RequestMessageViewModel : BaseViewModel(){
             { apiService.sendMessage(requestBody) },
             messageReq
         )
-        sendEvent(messageReq)
     }
 }

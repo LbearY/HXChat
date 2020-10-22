@@ -88,15 +88,9 @@ open class MessageViewModel(application: Application)  : AndroidViewModel(applic
         GlobalScope.launch {
             val recentChat = withContext(Dispatchers.IO){
                 Timber.d("save:$data")
-                if(data.isSender || friendId == data.sender){
-                    dbSaveMessage(userId,friendId,read,data)
-                    // 保存最近聊天好友
-                    RecentChat(userId,friendId,showName,avatar,data.dateTime)
-                }else{
-                    dbSaveMessage(userId,data.sender,read,data)
-                    // 保存最近聊天好友
-                    RecentChat(userId,data.sender!!,data.senderName,null,data.dateTime)
-                }
+                dbSaveMessage(userId,friendId,read,data)
+                // 保存最近聊天好友
+                RecentChat(userId,friendId,showName,avatar,data.dateTime)
             }
             dbSaveRecentChat(recentChat)
         }

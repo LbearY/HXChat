@@ -37,7 +37,9 @@ class LoginFragment : BaseFragment<LoginRegisterViewModel, FragmentLoginBinding>
 
 
         center_toolbar.tvTitle.text = "登录"
-        center_toolbar.ivLeft.visibility = View.GONE
+        center_toolbar.ivLeft.setOnClickListener{
+            nav().navigateUp()
+        }
     }
 
 
