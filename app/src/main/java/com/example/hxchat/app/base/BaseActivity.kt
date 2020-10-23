@@ -4,6 +4,7 @@ import android.content.res.Resources
 import android.os.Bundle
 import androidx.annotation.StringRes
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.Lifecycle
 import com.example.hxchat.R
 import com.example.hxchat.app.Constants
 import com.example.hxchat.app.event.AppViewModel
@@ -59,6 +60,7 @@ abstract class BaseActivity<VM: BaseViewModel, DB : ViewDataBinding> :BaseVmDbAc
     }
 
 
+
     /**
      * 等待框
      */
@@ -90,13 +92,7 @@ abstract class BaseActivity<VM: BaseViewModel, DB : ViewDataBinding> :BaseVmDbAc
         isStop = true
     }
 
-    /**
-     * 处理适配失败时候的问题
-     */
-    override fun getResources(): Resources {
-        AutoSizeCompat.autoConvertDensityOfGlobal(super.getResources())
-        return super.getResources()
-    }
+
 
     fun getUserEmail() = appViewModel.userInfo.value?.email ?: ""
     fun getUserAvatar() = appViewModel.userInfo.value?.icon ?: ""

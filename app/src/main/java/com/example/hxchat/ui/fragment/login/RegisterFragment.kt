@@ -45,6 +45,7 @@ class RegisterFragment : BaseFragment<LoginRegisterViewModel, FragmentRegisterBi
             parseState(resultState, {
                 CacheUtil.setUser(it)
                 CacheUtil.setIsLogin(true)
+                appViewModel.isLogin.postValue(true)
                 appViewModel.userInfo.postValue(it)
                 nav().navigateAction(R.id.action_registerFrgment_to_mainFragment)
             },{
@@ -71,6 +72,7 @@ class RegisterFragment : BaseFragment<LoginRegisterViewModel, FragmentRegisterBi
                 mViewModel.password.get().length < 6 -> showMessage("密码最少6位")
                 mViewModel.password.get() != mViewModel.password2.get() -> showMessage("密码不一致")
                 else -> requestLoginRegisterViewModel.registerAndLogin(
+                    mViewModel.nickname.value,
                     mViewModel.email.value,
                     mViewModel.password.get()
                 )

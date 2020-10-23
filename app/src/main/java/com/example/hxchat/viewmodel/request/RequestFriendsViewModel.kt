@@ -25,7 +25,9 @@ class RequestFriendsViewModel : BaseViewModel(){
      * 获取用户的好友列表
      */
     fun getfriends(){
-        request({ apiService.getFriends()},
+        Log.d("friendsData", "拉取")
+        request(
+            { apiService.getFriends() },
             friendsData
         )
     }

@@ -9,7 +9,29 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.example.hxchat.ui.fragment.MainFragment"
-        android:label="MainFragment" />
+        android:label="MainFragment" >
+        <action
+            android:id="@+id/action_mainfragment_to_searchFragment"
+            app:destination="@id/searchFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+        android:id="@+id/action_mainfragment_to_friendUserInfoFragment"
+        app:destination="@id/friendUserInfoFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_mainfragment_to_meUserInfoFragment"
+            app:destination="@id/meUserInfoFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
 
     <fragment
         android:id="@+id/loginFragment"
@@ -45,5 +67,37 @@
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right"/>
+        app:popExitAnim="@anim/slide_out_right" />
+    <action
+        android:id="@+id/action_to_searchResultFragment"
+        app:destination="@id/friendUserInfoFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.hxchat.ui.fragment.search.SearchFragment"
+        android:label="SearchFragment" />
+    <fragment
+        android:id="@+id/friendUserInfoFragment"
+        android:name="com.example.hxchat.ui.fragment.userinfo.friendUserInfoFragment"
+        android:label="friendUserInfoFragment" />
+    <fragment
+        android:id="@+id/meUserInfoFragment"
+        android:name="com.example.hxchat.ui.fragment.userinfo.meUserInfoFragment"
+        android:label="meUserInfoFragment">
+        <action
+            android:id="@+id/action_meUserInfoFragment_to_changeUserInfoFragment"
+            app:destination="@id/changeUserInfoFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/changeUserInfoFragment"
+        android:name="com.example.hxchat.ui.fragment.userinfo.changeUserInfoFragment"
+        android:label="changeUserInfoFragment" />
+
 </navigation>

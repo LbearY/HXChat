@@ -34,8 +34,7 @@
                 android:drawablePadding="@dimen/size_4dp"
                 android:drawableRight="@drawable/ec_next"
                 android:background="@drawable/white_selector"
-                app:layout_constraintTop_toTopOf="parent"
-                style="@style/OnClick"/>
+                app:layout_constraintTop_toTopOf="parent"/>
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ivAvatar"
                 android:layout_width="@dimen/size_60dp"
@@ -64,7 +63,8 @@
                 android:drawableRight="@drawable/ec_next"
                 android:background="@drawable/white_selector"
                 app:layout_constraintTop_toBottomOf="@+id/tvLabelAvatar"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                android:onClick="@{()->click.toRemark()}"/>
             <TextView
                 android:id="@+id/tvRemark"
                 android:layout_width="wrap_content"
@@ -92,8 +92,7 @@
                 android:paddingRight="@dimen/size_16dp"
                 android:drawablePadding="@dimen/size_4dp"
                 android:background="@drawable/white_selector"
-                app:layout_constraintTop_toBottomOf="@+id/tvLabelRemark"
-                style="@style/OnClick"/>
+                app:layout_constraintTop_toBottomOf="@+id/tvLabelRemark" />
             <TextView
                 android:id="@+id/tvNickname"
                 android:layout_width="wrap_content"
@@ -121,7 +120,7 @@
                 android:drawablePadding="@dimen/size_4dp"
                 android:background="@drawable/white_selector"
                 app:layout_constraintTop_toBottomOf="@+id/tvLabelNickname"
-                style="@style/OnClick"/>
+                />
             <TextView
                 android:id="@+id/tvUsername"
                 android:layout_width="wrap_content"
@@ -148,8 +147,7 @@
                 android:paddingRight="@dimen/size_16dp"
                 android:drawablePadding="@dimen/size_4dp"
                 android:background="@drawable/white_selector"
-                app:layout_constraintTop_toBottomOf="@+id/tvLabelUsername"
-                style="@style/OnClick"/>
+                app:layout_constraintTop_toBottomOf="@+id/tvLabelUsername" />
             <TextView
                 android:id="@+id/tvSignature"
                 android:layout_width="wrap_content"
@@ -167,7 +165,7 @@
 
             <Button
                 android:id="@+id/btnAdd"
-                android:onClick="@{()->click.addFriend()}"
+                android:onClick="@{()->click.clickButton()}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/size_20dp"

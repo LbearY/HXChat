@@ -15,11 +15,13 @@ import kotlinx.android.parcel.Parcelize
 @Entity(indices = [Index(value = ["email"], unique = true)])
 @Parcelize
 @SuppressLint("ParcelCreator")
-class User(val email: String,
-           var nickName: String,
-           var icon: String?,
-           var signature: String?,
-           var remark: String? = null) : Parcelable {
+class User(
+    val email: String,
+    var nickname: String,
+    var icon: String?,
+    var signature: String?,
+    var remark: String? = null
+) : Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
@@ -28,11 +30,11 @@ class User(val email: String,
         remark?.let {
             return it
         }
-        return nickName
+        return nickname
     }
 
     override fun toString(): String {
-        return "User(email=$email, nickName=$nickName, icon=$icon, signature=$signature)"
+        return "User(email=$email, nickname=$nickname, icon=$icon, signature=$signature)"
     }
 
     override fun equals(other: Any?): Boolean {

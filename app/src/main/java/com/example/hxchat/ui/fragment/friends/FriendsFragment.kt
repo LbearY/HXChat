@@ -25,7 +25,12 @@ import com.example.hxchat.viewmodel.state.MessageViewModel
 import com.example.hxchat.viewmodel.state.UsersViewModel
 import com.king.frame.mvvmframe.bean.Resource
 import kotlinx.android.synthetic.main.fragment_friends.*
+import kotlinx.android.synthetic.main.fragment_friends.rv
+import kotlinx.android.synthetic.main.fragment_friends.srl
+import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.home_toolbar.*
+import me.hgj.jetpackmvvm.ext.nav
+import me.hgj.jetpackmvvm.ext.navigateAction
 import me.hgj.jetpackmvvm.ext.parseState
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -49,6 +54,10 @@ class FriendsFragment:BaseFragment<FriendsViewModel, FragmentFriendsBinding>(), 
         mDatabind.vm = requestFriendsViewModel
         tvTitle.text = "好友"
 
+        ivRight.setImageResource(R.drawable.btn_search_selector)
+        ivRight.setOnClickListener(this)
+
+
         srl.setColorSchemeResources(R.color.colorAccent)
 
         rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -65,8 +74,13 @@ class FriendsFragment:BaseFragment<FriendsViewModel, FragmentFriendsBinding>(), 
     override fun createObserver() {
         requestFriendsViewModel.friendsData.observe(viewLifecycleOwner, Observer { resultState ->
             parseState(resultState, {
-                mAdapter.replaceData(it)
-                usersViewModel.saveUsers(it)
+                Log.d("it", it.toString())
+                if (it.size > 0) {
+                    mAdapter.replaceData(it)
+                    usersViewModel.saveUsers(it)
+                }
+                srl.isRefreshing = false
+            }, {
                 srl.isRefreshing = false
             })
         })
@@ -80,7 +94,15 @@ class FriendsFragment:BaseFragment<FriendsViewModel, FragmentFriendsBinding>(), 
     }
 
     fun clickItem(data: User){
+        nav().navigateAction(R.id.action_mainfragment_to_friendUserInfoFragment, Bundle().apply {
+            putParcelable("user", data)
+            putBoolean("isAlreadyFriend", true)
+        })
+    }
 
+    override fun onResume() {
+        requestFriendsViewModel.getfriends()
+        super.onResume()
     }
 
     private fun setEmpty(){
@@ -89,7 +111,13 @@ class FriendsFragment:BaseFragment<FriendsViewModel, FragmentFriendsBinding>(), 
         }
     }
 
-    override fun onClick(p0: View?) {
+    private fun clickSearch(){
+        nav().navigateAction(R.id.action_mainfragment_to_searchFragment)
+    }
 
+    override fun onClick(v: View?) {
+        when(v?.id){
+            R.id.ivRight -> clickSearch()
+        }
     }
 }

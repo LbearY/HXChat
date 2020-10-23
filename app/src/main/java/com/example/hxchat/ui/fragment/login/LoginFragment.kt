@@ -48,6 +48,7 @@ class LoginFragment : BaseFragment<LoginRegisterViewModel, FragmentLoginBinding>
             parseState(resultState, {
                 CacheUtil.setUser(it)
                 CacheUtil.setIsLogin(true)
+                appViewModel.isLogin.postValue(true)
                 appViewModel.userInfo.postValue(it)
                 nav().navigateUp()
             }, {

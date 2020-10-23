@@ -3,6 +3,7 @@ package com.example.hxchat.app.base
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.StringRes
 import androidx.databinding.ViewDataBinding
 import com.example.hxchat.app.Constants
 import com.example.hxchat.app.event.AppViewModel
@@ -11,11 +12,13 @@ import com.example.hxchat.app.ext.dismissLoadingExt
 import com.example.hxchat.app.ext.hideSoftKeyboard
 import com.example.hxchat.app.ext.showLoadingExt
 import com.example.hxchat.app.util.Event
+import com.example.hxchat.app.util.ToastUtils
 import me.hgj.jetpackmvvm.base.fragment.BaseVmDbFragment
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import me.hgj.jetpackmvvm.ext.getAppViewModel
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import com.tbruyelle.rxpermissions2.RxPermissions
 
 /**
  *Created by Pbihao
@@ -25,6 +28,7 @@ import org.greenrobot.eventbus.ThreadMode
 abstract class BaseFragment<VM : BaseViewModel, DB: ViewDataBinding>  : BaseVmDbFragment<VM, DB>(){
     val appViewModel: AppViewModel by lazy{getAppViewModel<AppViewModel>()}
     val eventViewModel: EventViewModel by lazy { getAppViewModel<EventViewModel>() }
+    val rxPermission by lazy { RxPermissions(this@BaseFragment) }
 
     abstract override fun layoutId(): Int
 
@@ -39,7 +43,7 @@ abstract class BaseFragment<VM : BaseViewModel, DB: ViewDataBinding>  : BaseVmDb
     /**
      * 实现懒加载
      */
-    override fun lazyLoadData() {    }
+    override fun lazyLoadData() {   }
 
     /**
      * 创建LiveData观察者
@@ -58,6 +62,10 @@ abstract class BaseFragment<VM : BaseViewModel, DB: ViewDataBinding>  : BaseVmDb
      */
     override fun showLoading(message: String) {
         showLoadingExt(message)
+    }
+
+    fun showToast(@StringRes resId: Int) {
+        ToastUtils.showToast(this.context, resId)
     }
 
     override fun dismissLoading() {

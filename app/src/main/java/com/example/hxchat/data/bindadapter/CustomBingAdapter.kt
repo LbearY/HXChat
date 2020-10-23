@@ -105,6 +105,10 @@ object CustomBingAdapter{
     @JvmStatic
     @BindingAdapter(value = ["avatar"])
     fun ImageView.avatar(imageUrl: String?){
+        if (imageUrl == ""){
+            Glide.with(context).load(R.drawable.default_avatar).into(this@avatar)
+            return
+        }
         imageUrl?.run {
             Glide.with(context).load(imageUrl).error(R.drawable.default_avatar).into(this@avatar)
         }?: run{

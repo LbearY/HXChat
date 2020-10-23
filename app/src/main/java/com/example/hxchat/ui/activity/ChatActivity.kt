@@ -3,16 +3,19 @@ package com.example.hxchat.ui.activity.chat
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
+import com.example.hxchat.app.util.Event.sendEvent
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hxchat.R
 import com.example.hxchat.app.Constants
 import com.example.hxchat.app.base.BaseActivity
+import com.example.hxchat.app.ext.hideSoftKeyboard
 import com.example.hxchat.app.util.Event
 import com.example.hxchat.app.util.KeyboardUtils
 import com.example.hxchat.data.model.bean.Operator
@@ -24,11 +27,16 @@ import com.example.hxchat.viewmodel.request.RequestMessageViewModel
 import com.example.hxchat.viewmodel.state.ChatViewModel
 import com.example.hxchat.viewmodel.state.MessageViewModel
 import com.king.easychat.netty.packet.MessageType
+import com.vanniktech.emoji.EmojiPopup
 import kotlinx.android.synthetic.main.center_toolbar.*
 import kotlinx.android.synthetic.main.fragment_chat.*
+import kotlinx.android.synthetic.main.rv_chat_item.*
+import kotlinx.android.synthetic.main.rv_chat_item.ivContent
+import kotlinx.android.synthetic.main.rv_chat_right_item.*
 import me.hgj.jetpackmvvm.ext.parseState
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+
 
 /**
  *Created by Pbihao
@@ -40,6 +48,7 @@ class ChatActivity : BaseActivity<ChatViewModel, FragmentChatBinding>(){
     var showName : String? = null
     var avatar : String? = null
 
+
     val mAdapter by lazy { ChatAdapter(avatar, getUserAvatar()) }
 
     var message : String? = null
@@ -49,24 +58,41 @@ class ChatActivity : BaseActivity<ChatViewModel, FragmentChatBinding>(){
     var isAutoScroll = true
 
     private val requestMessageViewModel: RequestMessageViewModel by viewModels()
-    private val messageViewModel : MessageViewModel by lazy {  ViewModelProvider(this).get(MessageViewModel::class.java) }
+    private val messageViewModel : MessageViewModel by lazy {  MessageViewModel(application) }
+
+    private val emojiPopup:EmojiPopup by lazy { EmojiPopup.Builder.fromRootView(findViewById(R.id.rtContent)).build(findViewById(R.id.etContent)) }
 
     override fun layoutId(): Int = R.layout.fragment_chat
 
     override fun initView(savedInstanceState: Bundle?) {
         tvSend.visibility = View.GONE
-
         srl.setColorSchemeResources(R.color.colorAccent)
         srl.setOnRefreshListener {
             isAutoScroll = false
             messageViewModel.queryMessageByFriendId(getUserEmail(), friendEmail, curPage, Constants.PAGE_SIZE)
         }
 
+        ivEmoji.setOnClickListener{ignore ->
+            if (emojiPopup.isShowing){
+                ivEmoji.setImageResource(R.drawable.ic_add_emoji)
+            }else{
+                ivEmoji.setImageResource(R.drawable.ic_keyboard)
+            }
+            emojiPopup.toggle()
+        }
 
         KeyboardUtils.registerSoftInputChangedListener(this) {
             if(it>0){
                 rv.scrollToPosition(mAdapter.itemCount - 1)
             }
+        }
+
+        ivLeft.setOnClickListener{
+            onBackPressed()
+        }
+
+        tvSend.setOnClickListener{
+            clickSend()
         }
 
         etContent.addTextChangedListener(object : TextWatcher {
@@ -116,8 +142,6 @@ class ChatActivity : BaseActivity<ChatViewModel, FragmentChatBinding>(){
         appViewModel.friendEmail.postValue(friendEmail)
 
         messageViewModel.queryMessageByFriendId(getUserEmail(),friendEmail,curPage,Constants.PAGE_SIZE)
-
-
     }
 
     override fun createObserver() {
@@ -143,7 +167,9 @@ class ChatActivity : BaseActivity<ChatViewModel, FragmentChatBinding>(){
 
         requestMessageViewModel.messageReq.observe(this, Observer {resultState ->
             parseState(resultState,{
-                handleMessageResp(it)
+//                handleMessageResp(it)
+                etContent.setText("")
+                sendEvent(it)
             })
         })
     }
@@ -171,11 +197,14 @@ class ChatActivity : BaseActivity<ChatViewModel, FragmentChatBinding>(){
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: MessageResp){
+        Log.d("message", event.toString())
         handleMessageResp(event)
     }
 
     fun handleMessageResp(resp: MessageResp?){
         resp?.let {
+            resp.isSelf()
+            Log.d("handleMessageResp", resp.isSender.toString())
             if(it.isSender || friendEmail == it.sender){
                 mAdapter.addData(it)
                 //messageViewModel.saveMessage(getUserEmail(), friendEmail, showName, avatar,true,resp)
@@ -187,7 +216,7 @@ class ChatActivity : BaseActivity<ChatViewModel, FragmentChatBinding>(){
 
     }
 
-    private fun clickSend(){
+     private fun clickSend(){
         message = etContent.text.toString()
         message?.let {
             requestMessageViewModel.sendMessage(friendEmail, it, MessageType.TEXT)
@@ -195,14 +224,8 @@ class ChatActivity : BaseActivity<ChatViewModel, FragmentChatBinding>(){
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
         Event.sendEvent(Operator(Constants.EVENT_UPDATE_MESSAGE_READ))
+        super.onBackPressed()
     }
 
-    fun onClick(v: View){
-        if(v.id == R.id.ivLeft) onBackPressed()
-        when(v.id){
-            R.id.tvSend -> clickSend()
-        }
-    }
 }

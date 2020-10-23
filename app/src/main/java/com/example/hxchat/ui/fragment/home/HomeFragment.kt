@@ -2,6 +2,7 @@ package com.example.hxchat.ui.fragment.home
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -24,6 +25,8 @@ import com.king.easychat.netty.packet.PacketType
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.home_toolbar.*
 import me.hgj.jetpackmvvm.base.appContext
+import me.hgj.jetpackmvvm.ext.nav
+import me.hgj.jetpackmvvm.ext.navigateAction
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -32,7 +35,7 @@ import org.greenrobot.eventbus.ThreadMode
  * on 2020/10/4
  */
 
-class HomeFragment: BaseFragment<HomeViewModel, FragmentHomeBinding>(){
+class HomeFragment: BaseFragment<HomeViewModel, FragmentHomeBinding>(), View.OnClickListener{
 
     override fun layoutId(): Int = R.layout.fragment_home
 
@@ -59,6 +62,9 @@ class HomeFragment: BaseFragment<HomeViewModel, FragmentHomeBinding>(){
 
     override fun initView(savedInstanceState: Bundle?) {
 
+        ivRight.setImageResource(R.drawable.btn_search_selector)
+        ivRight.setOnClickListener(this)
+
         tvTitle.setText(R.string.menu_message)
         srl.setColorSchemeResources(R.color.colorAccent)
         srl.setOnRefreshListener {
@@ -84,10 +90,12 @@ class HomeFragment: BaseFragment<HomeViewModel, FragmentHomeBinding>(){
     override fun createObserver() {
         messageViewModel.run {
             lastMessageLiveData.observe(viewLifecycleOwner, Observer{
+                srl.isRefreshing = false
                 mAdapter.curTime = System.currentTimeMillis()
                 mAdapter.replaceData(it)
             })
             totalCountLiveData.observe(viewLifecycleOwner, Observer {
+                srl.isRefreshing = false
                 onTotalCountCallback?.onTotalCountChanged(it)
             })
         }
@@ -155,6 +163,16 @@ class HomeFragment: BaseFragment<HomeViewModel, FragmentHomeBinding>(){
 
     fun clickDeleteItem(data: Message){
         messageViewModel.deleteLatestChat(getUserEmail(), data)
+    }
+
+    private fun clickSearch(){
+        nav().navigateAction(R.id.action_mainfragment_to_searchFragment)
+    }
+
+    override fun onClick(v: View?) {
+        when(v?.id){
+            R.id.ivRight -> clickSearch()
+        }
     }
 
 }

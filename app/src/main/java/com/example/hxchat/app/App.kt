@@ -12,8 +12,11 @@ import com.kingja.loadsir.core.LoadSir
 import com.tencent.bugly.Bugly
 import com.tencent.bugly.crashreport.CrashReport
 import com.tencent.mmkv.MMKV
+import com.vanniktech.emoji.EmojiManager
+import com.vanniktech.emoji.google.GoogleEmojiProvider
 import me.hgj.jetpackmvvm.base.BaseApp
 import me.hgj.jetpackmvvm.ext.util.jetpackMvvmLog
+
 
 /**
  *Created by Pbihao
@@ -28,6 +31,9 @@ class App : BaseApp(){
     override fun onCreate() {
         super.onCreate()
         instance = this
+
+        EmojiManager.install(GoogleEmojiProvider())
+
         MultiDex.install(this)
         MMKV.initialize(this.filesDir.absolutePath + "/mmkv")
         //界面加载管理 初始化
