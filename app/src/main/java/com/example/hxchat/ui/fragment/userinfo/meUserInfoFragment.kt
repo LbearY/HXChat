@@ -138,6 +138,7 @@ class meUserInfoFragment: BaseFragment<MeUserInfoViewModel, FragmentMeUserInfoBi
                 putInt(Constants.KEY_TYPE, Constants.ChangeMeNickName)
             })
         }
+
         @SuppressLint("CheckResult")
         fun toEditIcon(){
             rxPermission.request(
