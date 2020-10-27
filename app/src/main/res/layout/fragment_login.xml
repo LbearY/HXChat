@@ -18,7 +18,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
+        android:background="@mipmap/bg14"
         android:orientation="vertical">
 
         <include layout="@layout/center_toolbar"/>
@@ -36,11 +36,13 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="48dp"
-                    android:src="@mipmap/ic_launcher"/>
+                    android:src="@mipmap/ic_launcher"
+
+                    bind:srcCompat="@drawable/app_logo" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
